@@ -1,0 +1,49 @@
+.textField{
+    div:nth-child(2){
+        width: 100%;
+    }
+}
+div.signForm{
+    width: 90%;
+    div.email{
+        width: 100%;
+    }
+    div.passForm{
+        div:first-child{
+            div:first-child{
+                width: 100%;
+            }
+        }
+        div.pass2{
+            margin-left: 10px;
+        }
+        a.forgotPass{
+            width: 100%;
+            display: block;
+            text-align: right;
+            font-size: .8em;
+            color: #ccc;
+            margin: 5px 0px;
+        }
+        flex-direction: row !important;
+    }
+    div.buttonDiv{
+        margin: 10px 0px;
+        height: 36px;
+        div.defaultSignIn{
+            button{
+                width: 100%;
+            }
+        }
+        div.socialSignIn{
+            display: flex;
+            justify-content: flex-end;
+            svg{
+                width: 36px;
+                path {
+                    fill: #ccc;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+@import './Variable.scss';
+.header{
+    min-height: 64px;
+    .appBar{
+        background-color: initial;
+        box-shadow: unset;
+        position: relative;
+        img.logo{
+            width: 60%;
+            margin-top: 10px;
+        }
+        a.logo{
+            text-decoration: none;
+            display: flex;
+            max-height: 50px;
+            align-items: center;
+            width: 100px;
+            svg{
+                width: 30%;
+            }
+            svg.svgAuthen{
+                width: 40%;
+                path{
+                    fill:$main_button_color
+                }
+            }
+            label{
+                font-size: .9em;
+            }
+        }
+        div.toolBar{
+            display: flex;
+            flex-direction: row;
+            div.menuButtonDiv{
+                text-align: right;
+                flex-grow: 1;
+            }
+        }
+        .signButton{
+            min-height: 36px;
+            display: inline-block;
+            position: absolute;
+            top: 5px;
+            right: 20px;
+            button{
+                span{
+                    font-weight: bold;
+                }
+            }
+        }
+        .signInButton{
+            right: 100px;
+        }
+        a.active{
+            background-color: rgba(204, 204, 204, .3);
+            border-radius: 2px;
+        }
+        a.menu{
+            display: inline-block;
+            transition: 300ms;
+            border: solid 1px transparent;
+        }
+        a.menu:hover:not(.active){
+            border-bottom-color:#ccc;
+        }
+    }
+}

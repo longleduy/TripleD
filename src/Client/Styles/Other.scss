@@ -1,0 +1,11 @@
+div.errorForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding-bottom: 80px;
+    label{
+        font-size: 2em;
+    }
+}

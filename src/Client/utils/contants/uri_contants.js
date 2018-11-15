@@ -1,0 +1,9 @@
+//const HOST = 'https://192.168.10.111'
+const HOST = 'https://192.168.0.100'
+const CLIENT_PORT = '8086'
+const SERVER_PORT = '4000'
+const GRAPHQL_ENDPOINT = 'graphql'
+module.exports.HOST = HOST
+module.exports.CLIENT_PORT = CLIENT_PORT
+module.exports.SERVER_PORT = SERVER_PORT
+module.exports.GRAPHQL_ENDPOINT = GRAPHQL_ENDPOINT

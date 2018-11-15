@@ -1,0 +1,8 @@
+@import './Variable.scss';
+.container{
+    min-height: $container_main_height;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

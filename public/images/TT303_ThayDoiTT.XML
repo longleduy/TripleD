@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HSoThueDTu xmlns="http://kekhaithue.gdt.gov.vn/TKhaiThue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <HSoKhaiThue>
+      <TTinChung>
+         <TTinDVu>
+            <maDVu>IHTKK</maDVu>
+            <tenDVu>IHTKK 3.0.0</tenDVu>
+            <pbanDVu>3.0.0</pbanDVu>
+            <ttinNhaCCapDVu>IHTKK-TCT</ttinNhaCCapDVu>
+         </TTinDVu>
+         <TTinTKhaiThue>
+            <TKhaiThue>
+               <maTKhai>689</maTKhai>
+               <tenTKhai>Điều chỉnh thông tin tại thông báo phát hành biên lai</tenTKhai>
+               <moTaBMau/>
+               <pbanTKhaiXML>2.2.4</pbanTKhaiXML>
+               <loaiTKhai>C</loaiTKhai>
+               <soLan>0</soLan>
+               <KyKKhaiThue>
+                  <kieuKy>D</kieuKy>
+                  <kyKKhai>24/09/2018</kyKKhai>
+                  <kyKKhaiTuNgay>24/09/2018</kyKKhaiTuNgay>
+                  <kyKKhaiDenNgay>24/09/2018</kyKKhaiDenNgay>
+                  <kyKKhaiTuThang></kyKKhaiTuThang>
+                  <kyKKhaiDenThang></kyKKhaiDenThang>
+               </KyKKhaiThue>
+               <maCQTNoiNop>70100</maCQTNoiNop>
+               <tenCQTNoiNop>Cục Thuế Thành phố Hồ Chí Minh</tenCQTNoiNop>
+               <ngayLapTKhai>24/09/2018</ngayLapTKhai>
+               <nguoiKy>6666</nguoiKy>
+               <ngayKy>2018-09-24</ngayKy>
+               <nganhNgheKD></nganhNgheKD>
+            </TKhaiThue>
+            <NNT>
+               <mst>0100231226-998</mst>
+               <tenNNT>Tổng cục thuế</tenNNT>
+               <dchiNNT> 123 Lò Đúc</dchiNNT>
+               <phuongXa></phuongXa>
+               <maHuyenNNT></maHuyenNNT>
+               <tenHuyenNNT>Quận Hai Bà Trưng</tenHuyenNNT>
+               <maTinhNNT></maTinhNNT>
+               <tenTinhNNT>Hà Nội</tenTinhNNT>
+               <dthoaiNNT>093089392828</dthoaiNNT>
+               <faxNNT>9712286</faxNNT>
+               <emailNNT>xuandt@seatechit.com.vn</emailNNT>
+            </NNT>
+         </TTinTKhaiThue>
+      </TTinChung>
+      <CTieuTKhaiChinh>
+         <ngayThangNam>2017-02-02</ngayThangNam>
+         <BienLai>
+            <ChiTiet ID="0">
+               <ttinThayDoi>Tên cơ quan phát hành biên lai</ttinThayDoi>
+               <tTinCu>1</tTinCu>
+               <tTinMoi>2</tTinMoi>
+            </ChiTiet>
+         </BienLai>
+         <tenCQTTiepNhan>Cục Thuế Thành phố Hồ Chí Minh</tenCQTTiepNhan>
+      </CTieuTKhaiChinh>
+   </HSoKhaiThue>
+   <CKyDTu/>
+</HSoThueDTu>

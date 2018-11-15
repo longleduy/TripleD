@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'Contempory';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../../../public/font/contempory.ttf');
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../../public/font/icon/MaterialIcons-Regular.eot');
+    /* For IE6-8 */
+    src: local('Material Icons'), 
+        local('MaterialIcons-Regular'), 
+        url('../../../public/font/icon/MaterialIcons-Regular.woff2') format('woff2'), 
+        url('../../../public/font/icon/MaterialIcons-Regular.woff') format('woff'), 
+        url('../../../public/font/icon/MaterialIcons-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Google San';
+    src: url('../../../public/font/googlesan/GoogleSans-Regular.ttf');
+}
+@font-face {
+    font-family: 'Google San';
+    font-style: normal;
+    font-weight: bold;
+    src: url('../../../public/font/googlesan/GoogleSans-Bold.ttf');
+}
