@@ -5,4 +5,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 79px;
+}
+.fullContainer{
+    min-height: 100vh !important;
+    padding-top: unset;
 }

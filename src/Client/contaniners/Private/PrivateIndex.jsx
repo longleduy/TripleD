@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react'
-import PrivateIndexForm from '../../Components/Private/PrivateIndexForm.jsx'
-export const PrivateIndex = props => {
+import PrivateIndexForm from '../../components/private/PrivateIndexForm.jsx'
+export const PrivateIndex = React.memo((props) => {
     return <Fragment>
         <PrivateIndexForm />
     </Fragment>
-}
+})

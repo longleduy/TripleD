@@ -4,8 +4,18 @@ export const mutationUserInfo = (_, args, { cache }) => {
             queryUserInfo: {
                 __typename: 'UserInfo',
                 isAuthen: args.userInfo.isAuthen,
-                jwt: args.userInfo.jwt,
-                profileName: args.userInfo.profileName
+                profileName: args.userInfo.profileName,
+                email: args.userInfo.email,
+                gender: args.userInfo.gender,
+                level: args.userInfo.level,
+                avatar: args.userInfo.avatar,
+                joinAt: args.userInfo.joinAt,
+                dateOfBirth:args.userInfo.dateOfBirth,
+                point:0,
+                rank:14,
+                facebookAdress:args.userInfo.facebookAdress,
+                instagramAdress:args.userInfo.instagramAdress,
+                posts:0
             }
         }
     })

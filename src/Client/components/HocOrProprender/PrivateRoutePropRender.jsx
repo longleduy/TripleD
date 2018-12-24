@@ -7,7 +7,7 @@ class PrivateRoutePropRender extends Component{
     constructor(props) {
         super(props); 
     }
-    componentWillMount = async () => {  
+    componentWillMount = async () => {
         const result = await this.props.client.query({
             query: QUERY_USER_INFO
         })

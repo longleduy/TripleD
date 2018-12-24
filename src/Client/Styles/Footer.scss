@@ -1,0 +1,46 @@
+@import './Variable.scss';
+div.footer{
+    z-index: 999999;
+    min-height: 180px;
+    background-color: $footer_color;
+    border-top: solid 2px $main_button_color;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    div.footerContent{
+        width: 65%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        div.footerLogo{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            max-height: 50px;
+            svg{
+                width: 40px;
+            }
+        }
+        div.footerInfo{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            label{
+                margin: 15px;
+                font-size: .9em;
+            }
+        }
+        div.footerSocialConnect{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            svg{
+                width: 30px;
+                margin: 0px 5px;
+            }
+        }
+    }
+}

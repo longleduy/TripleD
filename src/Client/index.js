@@ -18,12 +18,11 @@ import Logo from "../../public/images/logo/favicon.png"
 import { HOST, SERVER_PORT, GRAPHQL_ENDPOINT } from '../Configs/_host_contants'
 //Todo: Utils
 import {mutationUserInfo} from './graphql/local/mutation'
-import { QUERY_USER_INFO } from './utils/contants/local_state_contants'
 import { getCacheLocalStorage } from './graphql/local/defaults'
 import ApolloProviderPropsRender from './ApolloProviderHOC'
-const cache = new InMemoryCache();
-const history = createBrowserHistory()
-
+const cache = new InMemoryCache({
+    dataIdFromObject: object => object.id
+});
 //Todo: Apollo link state
 const stateLink = withClientState({
     cache,
@@ -36,12 +35,12 @@ const stateLink = withClientState({
 })
 //Todo: Apollo link context
 const contextLink = setContext((_, { headers }) => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (userInfo != null) {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token != null && token != '') {
         return {
             headers: {
                 ...headers,
-                authorization: `Beare ${userInfo.jwt}`
+                authorization: `Beare ${token}`
             }
         }
     }
@@ -54,12 +53,7 @@ const afterWareLink = new ApolloLink((operation, forward) => {
         if (headers) {
             const newJWT = headers.get('x-refresh-token');
             if (newJWT) {
-                const oldUserInfo = JSON.parse(localStorage.getItem('userInfo'));
-                const newUserInfo = {
-                    ...oldUserInfo,
-                    jwt: newJWT
-                };
-                localStorage.setItem('userInfo', JSON.stringify(newUserInfo))
+                localStorage.setItem('token', JSON.stringify(newJWT))
             }
         }
         return response;

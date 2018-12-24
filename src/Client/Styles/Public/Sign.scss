@@ -1,23 +1,61 @@
-.textField{
-    div:nth-child(2){
+@import '../Variable.scss';
+.textField {
+    div:nth-child(2) {
         width: 100%;
     }
 }
-div.signForm{
+
+div.signForm {
     width: 90%;
-    div.email{
+    div.email {
         width: 100%;
     }
-    div.passForm{
-        div:first-child{
-            div:first-child{
+    span.noteSign {
+        display: flex;
+        margin: 5px 0px 20px 0px;
+        svg {
+            width: 3%;
+            height: 100%;
+            margin-right: 5px;
+            path {
+                fill: $hight-light_color;
+            }
+        }
+        label {
+            font-size: .75em;
+            color: $hight-light_color;
+        }
+    }
+    a.linkSignButton {
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        button {
+            font-weight: bold;
+        }
+    }
+    div.passForm {
+        div:first-child {
+            div:first-child {
                 width: 100%;
             }
         }
-        div.pass2{
+        span.forgotPassLink {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            font-size: .8em;
+            margin: 5px 0px 20px 0px;
+            a {
+                margin-left: 5px;
+                color: $hight-light_color;
+            }
+        }
+        div.pass2 {
             margin-left: 10px;
         }
-        a.forgotPass{
+        a.forgotPass {
             width: 100%;
             display: block;
             text-align: right;
@@ -27,18 +65,18 @@ div.signForm{
         }
         flex-direction: row !important;
     }
-    div.buttonDiv{
+    div.buttonDiv {
         margin: 10px 0px;
         height: 36px;
-        div.defaultSignIn{
-            button{
+        div.defaultSignIn {
+            button {
                 width: 100%;
             }
         }
-        div.socialSignIn{
+        div.socialSignIn {
             display: flex;
             justify-content: flex-end;
-            svg{
+            svg {
                 width: 36px;
                 path {
                     fill: #ccc;

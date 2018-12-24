@@ -3,9 +3,19 @@ import gql from 'graphql-tag'
 export const QUERY_USER_INFO = gql`
 query QueryUserInfo{
 	queryUserInfo @client {
-		isAuthen,
-		jwt,
+		avatar
+		joinAt
+		dateOfBirth
+		email
+		facebookAdress
+		gender
+		instagramAdress
+		isAuthen
+		level
+		point
+		posts
 		profileName
+		rank
 	}
 	}
 `;

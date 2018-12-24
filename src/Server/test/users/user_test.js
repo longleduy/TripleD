@@ -49,14 +49,10 @@ export const userAccountTest = (action = 'run') => {
                 password: "longkhanh"
             }`
             try {
-                const res = await chai.request(`${HOST}:${SERVER_PORT}`).post(`/${GRAPHQL_ENDPOINT}`).send({'query':`mutation{signIn(formData:${signInData}){profileName,level,...on SignInInfo{jwt}}}`})
+                const res = await chai.request(`${HOST}:${SERVER_PORT}`).post(`/${GRAPHQL_ENDPOINT}`).send({'query':`mutation{signIn(formData:${signInData}){jwt}}`})
                 res.body.data.signIn.should.to.be.an('object');
                 res.body.data.signIn.should.have.property('jwt');
-                res.body.data.signIn.should.have.property('profileName');
-                res.body.data.signIn.should.have.property('level');
                 res.body.data.signIn.jwt.should.not.be.equal(null);
-                res.body.data.signIn.profileName.should.not.be.equal(null);
-                res.body.data.signIn.level.should.not.be.equal(null);
             } catch (error) {
                 throw error
             }

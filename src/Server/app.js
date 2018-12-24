@@ -6,6 +6,7 @@ import {redisServer} from './utils/redis'
 import {HOST,CLIENT_PORT} from '../Configs/_host_contants'
 const app = express();
 const urlencodedParser = bodyParser.urlencoded({limit: '50mb',extended: false });
+require('dotenv').config();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(urlencodedParser);
 app.use(redisServer);

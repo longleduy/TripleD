@@ -1,8 +1,10 @@
 
 import chalk from 'chalk'
-import "regenerator-runtime/runtime";
-import { ApolloServer } from 'apollo-server-express';
+import "regenerator-runtime/runtime"
+import { ApolloServer,gra } from 'apollo-server-express'
+import { SubscriptionServer } from 'subscriptions-transport-ws'
 import * as https from 'https'
+import { subscribe, execute } from 'graphql'
 import * as fs from 'fs'
 //Todo: DB connect
 import { connectMongooseDB } from './utils/mongoose'
@@ -15,8 +17,6 @@ import { ErrorLogger } from './utils/logger'
 //Todo: Ultis
 import * as ServerInfo from '../Configs/_host_contants'
 //Todo: ENV
-require('dotenv').config();
-
 const connectApolloServer = async () => {
   const configurations = {
     production: { ssl: false, port: `${ServerInfo.PRODUCTION_PORT}`, hostname: `${ServerInfo.HOST_NAME_PRODUCTION}` },
@@ -27,13 +27,13 @@ const connectApolloServer = async () => {
 
   const server = new ApolloServer({
     schema,
-    context: async ({ req,res, next }) => {
-        return {req,res}
+    context: async ({ req, res, next }) => {
+      return { req, res }
     },
     formatError: error => {
       const message = error.message;
       if (error.extensions.exception.name !== "dataFormInvalid") {
-       // ErrorLogger(error.extensions.exception.stacktrace);
+        // ErrorLogger(error.extensions.exception.stacktrace);
         console.log(error);
       }
       return {
@@ -41,10 +41,10 @@ const connectApolloServer = async () => {
         message,
       };
     },
-    playground: false
+    playground: true
   });
   //Todo: Disable cors của ApolloServer nếu không nó sẽ đè lên cors của app => vấn đề về Sameorigin
-  server.applyMiddleware({ app,cors:false });
+  server.applyMiddleware({ app, cors: false });
   var sslServer;
   if (config.ssl) {
     sslServer = https.createServer({
@@ -54,18 +54,27 @@ const connectApolloServer = async () => {
   } else {
     sslServer = http.createServer(app)
   }
-  server.installSubscriptionHandlers(sslServer)
-  sslServer.listen({ port: `${ServerInfo.SERVER_PORT}` });
+  //server.installSubscriptionHandlers(sslServer)
+  sslServer.listen({ port: `${ServerInfo.SERVER_PORT}` },() => {
+    new SubscriptionServer({
+      execute,
+      subscribe,
+      schema:schema,
+    }, {
+      server: sslServer,
+      path: '/subscriptions',
+    });
+});
 }
-const run = async () => {
-  try {
-    const connectDB = connectMongooseDB();
-    const connectServer = connectApolloServer();
-    await connectDB;
-    await connectServer;
-    console.log(`🛡️  ${chalk.cyan('Apollo server')},${chalk.green('MongoDB')} connecting..., ${chalk.cyan('Port')} ${ServerInfo.SERVER_PORT}`)
-  } catch (error) {
-    console.log(error);
+  const run = async () => {
+    try {
+      const connectDB = connectMongooseDB();
+      const connectServer = connectApolloServer();
+      await connectDB;
+      await connectServer;
+      console.log(`🛡️  ${chalk.cyan('Apollo server')},${chalk.green('MongoDB')} connecting..., ${chalk.cyan('Port')} ${ServerInfo.SERVER_PORT}`)
+    } catch (error) {
+      console.log(error);
+    }
   }
-}
-run();
+  run();

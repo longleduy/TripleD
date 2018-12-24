@@ -1,4 +1,4 @@
-//import {SIGN_OUT_MUTATION} from './contant/graphql_contants'
+import {SIGN_OUT_MUTATION} from '../../graphql/mutations/user_mutation'
 export const errorHandler = (history, error) => {
     console.error(error);
     const errorMessage = error.message.split(':')[0]
@@ -8,7 +8,7 @@ export const errorHandler = (history, error) => {
     });
 }
 export const errorHandlerAuthen =(error, client, history) => {
-    console.error(error);
+    console.error("Server error__________"+error);
     let code;
     let errorMessage = error.message.split(':')[0];
     try {
@@ -16,7 +16,7 @@ export const errorHandlerAuthen =(error, client, history) => {
     } catch (error) { }
     if (code === "UNAUTHENTICATED") {
         client.resetStore();
-        localStorage.removeItem('userInfo');
+        localStorage.removeItem('token');
         errorMessage = 'AuthenticationError'
         client.mutate({
             mutation: SIGN_OUT_MUTATION

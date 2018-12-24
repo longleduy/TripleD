@@ -1,6 +1,7 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { gql } from 'apollo-server-express'
 import { typeDefs as userAccountSchema, resolvers as userAccountResolver } from './users/user_schema'
+import {typeDefs as postSchema, resolvers as postResolver} from './posts/post_schema'
 const Query = gql`
     type Query {
         _empty: String
@@ -12,6 +13,6 @@ const Mutation = gql`
     }
 `
 export const schema = makeExecutableSchema({
-    typeDefs: [Query,Mutation, userAccountSchema],
-    resolvers: [userAccountResolver]
+    typeDefs: [Query,Mutation,userAccountSchema,postSchema],
+    resolvers: [userAccountResolver,postResolver]
 })

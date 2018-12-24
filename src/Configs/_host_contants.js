@@ -1,5 +1,5 @@
-const HOST = 'https://192.168.10.138'
-//const HOST = 'https://192.168.1.10'
+const HOST = 'https://192.168.10.83'
+//const HOST = 'https://192.168.16.154'
 const CLIENT_PORT = '8086'
 const SERVER_PORT = '4000'
 const PRODUCTION_PORT = '443'

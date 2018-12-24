@@ -1,6 +1,7 @@
 import React, { Fragment, Component, PureComponent } from 'react'
 import { Route, Link, withRouter } from 'react-router-dom'
 import { withApollo, Mutation } from "react-apollo"
+import jwt from 'jsonwebtoken'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -15,12 +16,11 @@ import materialUIStyles from '../../../Styles/MaterialUICustomize.scss'
 //Todo: Commons
 import * as Validator from '../../../utils/commons/validator'
 import {errorHandlerAuthen} from '../../../utils/commons/error_handlers'
-import {ProgressBarButton} from '../../Commons/ProgressBarButton.jsx'
+import {ProgressBarButton} from '../../commons/ProgressBarButton.jsx'
 //Todo: GraphQl
 import {SIGN_IN_MUTATION} from '../../../graphql/mutations/user_mutation'
 import {USER_INFO_STATE_MUTATION} from '../../../graphql/local/state_mutation'
 //Todo: PropsRender
-import MutationPropRender from '../../HocOrProprender/MutationPropRender.jsx'
 
 function TransitionUp(props) {
     return <Slide {...props} direction="down" />;
@@ -71,16 +71,16 @@ class PublicUserSignInForm extends PureComponent {
         let {signInData} = this.state;
         let status = await action({ variables: { formData: signInData } });
         if (status != null && status != '') {
-            const userInfo = {
-                isAuthen: true,
-                jwt: status.data.signIn.jwt,
-                profileName: status.data.signIn.profileName
-            }
+            const userInfo = jwt.decode(status.data.signIn.jwt);
+            userInfo["isAuthen"] = true;
+            userInfo["rank"] = 14;
+            userInfo["point"] = 0;
+            userInfo["posts"] = 0;
             await this.props.client.mutate({
                 variables: { userInfo: userInfo },
                 mutation: USER_INFO_STATE_MUTATION
             })
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            localStorage.setItem('token', JSON.stringify(status.data.signIn.jwt));
             this.props.history.push('/index')
         }
     }
@@ -104,6 +104,11 @@ class PublicUserSignInForm extends PureComponent {
         const {open,snackBarMessage,snackBarStatus,signUpSuccess,autoHide} = this.state;
         return <Fragment>
             <Grid item xs={6} className={`${styles.content} ${styles.signIn} ${appStyles.flexDivCol}`}>
+                <div className={styles.signHeader}>
+                     <svg viewBox="0 0 24 24">
+                        <path fill="#cccccc" d="M10.25,2C10.44,2 10.61,2.11 10.69,2.26L12.91,6.22L13,6.5L12.91,6.78L10.69,10.74C10.61,10.89 10.44,11 10.25,11H5.75C5.56,11 5.39,10.89 5.31,10.74L3.09,6.78L3,6.5L3.09,6.22L5.31,2.26C5.39,2.11 5.56,2 5.75,2H10.25M10.25,13C10.44,13 10.61,13.11 10.69,13.26L12.91,17.22L13,17.5L12.91,17.78L10.69,21.74C10.61,21.89 10.44,22 10.25,22H5.75C5.56,22 5.39,21.89 5.31,21.74L3.09,17.78L3,17.5L3.09,17.22L5.31,13.26C5.39,13.11 5.56,13 5.75,13H10.25M19.5,7.5C19.69,7.5 19.86,7.61 19.94,7.76L22.16,11.72L22.25,12L22.16,12.28L19.94,16.24C19.86,16.39 19.69,16.5 19.5,16.5H15C14.81,16.5 14.64,16.39 14.56,16.24L12.34,12.28L12.25,12L12.34,11.72L14.56,7.76C14.64,7.61 14.81,7.5 15,7.5H19.5Z" />
+                    </svg>
+                </div>
                 <label className={`${styles.signTitle}`}>
                     Sign In
                 </label>
@@ -117,7 +122,7 @@ class PublicUserSignInForm extends PureComponent {
                         className={`${signStyles.textField} ${appStyles.myTextField}`}
                         onChange={this.handleChangeDataForm}
                         onKeyUp={(e) => this.validEmail(e, 'Email address')}
-                        onKeyPress={e => Validator.cleanError(e, 'Email address')}
+                        //onKeyPress={e => Validator.cleanError(e, 'Email address')}
                     />
                     <Grid container className={signStyles.passForm}>
                         <Grid item xs={12}>
@@ -133,7 +138,10 @@ class PublicUserSignInForm extends PureComponent {
                             onKeyPress={e => Validator.cleanError(e, 'Pass word')}
                         />
                         </Grid>
-                        <Link to="/index" className={signStyles.forgotPass}>Forgot pass word? Click here.</Link>
+                        <span className={signStyles.forgotPassLink}>
+                            <label>Did you </label>
+                            <Link to="/index">forget your pass word?</Link>
+                        </span>                  
                     </Grid>   
                     <Grid container className={signStyles.buttonDiv}>
                             <Grid item xs={6} className={signStyles.defaultSignIn}>
@@ -157,16 +165,21 @@ class PublicUserSignInForm extends PureComponent {
                                 <svg viewBox="0 0 24 24">
                                     <path fill="#000000" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M17.71,9.33C18.19,8.93 18.75,8.45 19,7.92C18.59,8.13 18.1,8.26 17.56,8.33C18.06,7.97 18.47,7.5 18.68,6.86C18.16,7.14 17.63,7.38 16.97,7.5C15.42,5.63 11.71,7.15 12.37,9.95C9.76,9.79 8.17,8.61 6.85,7.16C6.1,8.38 6.75,10.23 7.64,10.74C7.18,10.71 6.83,10.57 6.5,10.41C6.54,11.95 7.39,12.69 8.58,13.09C8.22,13.16 7.82,13.18 7.44,13.12C7.81,14.19 8.58,14.86 9.9,15C9,15.76 7.34,16.29 6,16.08C7.15,16.81 8.46,17.39 10.28,17.31C14.69,17.11 17.64,13.95 17.71,9.33Z" />
                                 </svg>
-                            </Grid>
-                        </Grid>                      
+                            </Grid> 
+                        </Grid>
+                        <Link to="/sign/sign-up" className={signStyles.linkSignButton}>
+                            <Button>
+                                Sign Up                          
+                            </Button>
+                        </Link>                     
                 </div>
-                <Snackbar  className={`${materialUIStyles.mySnackBar} ${materialUIStyles.topSnackBar}`+` ${snackBarStatus == 'success'?materialUIStyles.mySnackBarSucess:null}`}
+                <Snackbar className={`${materialUIStyles.mySnackBar} ${materialUIStyles.topSnackBar}`+` ${snackBarStatus == 'success'?materialUIStyles.mySnackBarSucess:null}`}
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'center',
                             }}
                             open={this.state.open}
-                            autoHideDuration={autoHide}
+                            // autoHideDuration={autoHide}
                             onClose={this.handleClose} 
                             TransitionComponent={TransitionUp}
                             message={<span id="message-id" className={materialUIStyles.messageBox}>

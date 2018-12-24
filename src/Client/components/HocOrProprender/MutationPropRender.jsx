@@ -8,7 +8,8 @@ class MutationPropRender extends PureComponent {
     }
     render() {
         const { mutation,history,client } = this.props;
-        return <Mutation mutation={mutation} onError={error => errorHandlerAuthen(error, client, history)}>
+        return <Mutation mutation={mutation}
+        onError={error => errorHandlerAuthen(error, client, history)}>
             {(action, { loading, error, data }) => {
                 return (<Fragment>{this.props.mutationPropRender(action, { loading, error, data })}</Fragment>)
             }}

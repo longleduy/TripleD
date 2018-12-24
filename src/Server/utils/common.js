@@ -3,7 +3,6 @@ import path from 'path'
 import fs from 'fs'
 import mime from 'mime'
 import cloudinary from 'cloudinary'
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -39,7 +38,7 @@ export const convertToBase64URI = (fileName) => {
   let imgBase64 = `${dataBase64},${data.toString('base64')}`;
   return imgBase64;
 }
-export const uploadImage = async (base64Uri, option = null) => {
+export const uploadImage = async (base64Uri, option = {}) => {
   const result = await cloudinary.v2.uploader.upload(base64Uri, option);
   return result.secure_url;
 }
@@ -51,17 +50,17 @@ export const convertPostTime = (dateTime) => {
     return `Just now`
   }
   else if(postTimeMin >= 2 && postTimeMin <60){
-    return `${postTimeMin} mins ago`
+    return `${postTimeMin} mins`
   }
   else if(postTimeMin>=60 && postTimeMin < 60*24){
     const postTimeHour = Math.floor(postTimeMin/60);
     if(postTimeHour == 1){
-      return 'An hour ago'
+      return '1 hour'
     }
-    return `${postTimeHour} hours ago`
+    return `${postTimeHour} hours`
   }
   else if(postTimeMin >= 60*24 && postTimeMin < 60*24*2){
-    return `A day ago`
+    return `1 day`
   }
   else{
     const date = new Date(dateTime);

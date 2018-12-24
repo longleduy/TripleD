@@ -23,11 +23,7 @@ mutation AddNewUserAccount($formData: formData){
 export const SIGN_IN_MUTATION = gql`        
 mutation SignIn($formData: formData){
     signIn(formData:$formData){
-		profileName,
-		level
-		...on SignInInfo{
 			jwt
-		}
 	}
 }
 `
@@ -36,5 +32,15 @@ mutation SignOut{
     signOut{
 		isSuccess
 	}
+}`;
+export const UPDATE_USER_INFO_MUTATION = gql`        
+mutation UpdateUserInfo($updateUserDataInput: updateUserDataInput){
+	updateUserInfo(updateUserDataInput:$updateUserDataInput){
+		gender,
+        dateOfBirth,
+        facebookAdress,
+        instagramAdress,
+        avatar
+  }
 }
-`
+`;

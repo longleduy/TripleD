@@ -1,0 +1,269 @@
+@import './Variable.scss';
+input.border16{
+    border-radius: 16px;
+    font-family: "Lato" !important;
+    font-size: .8em;
+    background-color: #212121;
+    border: unset;
+    color: #ccc;
+    outline: unset;
+}
+div.indexContent {
+    div.rightContent {
+        z-index: 999999;
+        background-color: #292929;
+        position: fixed;
+        top: 0px;
+        left: 0;
+        width: 275px;
+        height: 100vh;
+        max-width: unset;
+        div.loading{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(41, 41, 41, 0.6);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg{
+                color: white;
+            }
+        }
+        div.divBanner {
+            max-height: 60px;
+            overflow: hidden;
+            position: relative;
+            border: solid 2px #ccc;
+            box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+            img.baner {
+                width: 100%;
+            }
+        }
+        div.divAvatar {
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            height: 40px;
+            div.divAvatarChild {
+                display: flex;
+                flex-direction: column;
+                height: 70px;
+                width: 70px;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                top: -35px;
+                left: 20px;
+                div.avatarDropzone {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    svg.addAvatar {
+                        width: 24px;
+                        position: absolute;
+                    }
+                    svg.cancelAddAvatar {
+                        width: 20px;
+                        position: absolute;
+                        bottom: -22px;
+                        path {
+                            fill: #ccc;
+                        }
+                    }
+                    img.avatar {
+                        border-color: $hight-light_color;
+                    }
+                    label {
+                        color: $hight-light_color !important;
+                    }
+                }
+            }
+            img.avatar {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                border: solid 2px #ccc;
+            }
+            label.userName {
+                position: absolute;
+                top: 5px;
+                left: 100px;
+            }
+        }
+        div.divUserInfo {
+            margin-top: 15px;
+            padding: 0px 15px;
+            div.userInfo {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+                svg {
+                    width: 18.38px;
+                    height: 100%;
+                    margin-right: 5px;
+                    path {
+                        fill: #ccc;
+                    }
+                }
+                label {
+                    font-size: .8em;
+                }
+                div.divGenderEdit {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    label.formLabel {
+                        font-size: .8em;
+                        color: $hight-light_color;
+                    }
+                    button.editGender {
+                        background-color: #212121;
+                        margin: 0px 5px;
+                        width: 50px;
+                        border-radius: 16px;
+                        border: solid 1px transparent;
+                    }
+                    button.genderSelected {
+                        border-color: $hight-light_color;
+                        background-color: unset !important;
+                        svg {
+                            path {
+                                fill: $hight-light_color;
+                            }
+                        }
+                        label {
+                            color: $hight-light_color;
+                        }
+                    }
+                }
+                input.dateOfBirthPicker {
+                    margin-left: 30px;
+                    text-align: center;
+                    padding: 5px;
+                    @extend .border16;
+                }
+            }
+            svg.svgEdit {
+                path {
+                    fill: $hight-light_color !important;
+                }
+            }
+            div.userInfoFull {
+                svg {
+                    width: 7.5%;
+                }
+            }
+            div.userInfoPoint {
+                label {
+                    color: $hight-light_color;
+                }
+                svg {
+                    path {
+                        fill: $hight-light_color;
+                    }
+                }
+            }
+        }
+        div.rank {
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            img {
+                width: 30%;
+                height: 100%;
+            }
+            label {
+                font-size: .8em;
+            }
+        }
+        div.creatPost {
+            width: 100%;
+            text-align: center;
+            margin-top: 45px;
+            button {
+                background-color: #212121;
+                svg {
+                    width: 10%;
+                    margin-right: 5px;
+                }
+            }
+        }
+        button.settingIcon {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            width: 30px;
+            height: 30px;
+            min-height: unset;
+            border-radius: 50%;
+        }
+        div.socialInfo {
+            width: 100%;
+            width: 100%;
+            margin-top: 50px;
+            position: absolute;
+            bottom: 30px;
+            span.spanSocialInfo {
+                margin-bottom: 15px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                input.inputEdit{
+                    @extend .border16;
+                    padding: 5px 15px 5px 10px;
+                    width: 45%;
+                }
+            }
+            svg {
+                width: 7%;
+                height: 100%;
+                margin-right: 5px;
+            }
+            label {
+                font-size: .7em;
+            }
+        }
+    }
+    div.mainContent {
+        display: flex;
+        margin-left: 280px;
+        margin-bottom: 10px;
+        div.topMember {
+            padding: 0px 5px;
+            width: 270px;
+            max-width: unset;
+            flex-basis: unset;
+        }
+        div.ads{
+            padding: 0px 10px;
+            max-width: unset;
+            flex-basis: unset;
+            flex-grow: 1;
+            width: 200px;
+        }
+        div.mainContentLeft{
+            padding: 0px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            div.circularProgress{
+                position: fixed;
+                top: 64px;
+                z-index: 999;
+                display: none;
+            }
+        }
+        div.mainContentRight {
+            padding: 0px 5px;
+        }
+    }
+}

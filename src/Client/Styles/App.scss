@@ -1,59 +1,75 @@
 @import './Variable.scss';
 @import './Font.scss';
-.app{
-    font-family: "Google San" !important;
+.app {
+    font-family: "Lato" !important;
     background-color: $app_background;
-    label{
+    label,input {
         color: #cccccc;
-        font-family: "Google San" !important;
+        font-family: "Lato" !important;
     }
-    a{
+    
+    a {
         text-decoration: none;
     }
-    div.borderDiv{
+    div.borderDiv {
         border: solid 1px #ccc;
     }
-    div.container{
+    div.container {
         width: 85%;
     }
-    .flexDivCol{
+    .flexDivCol {
         display: flex;
         flex-direction: column;
     }
-    .flexDivRow{
+    .flexDivRow {
         display: flex;
         flex-direction: row;
     }
-    button{
+    button {
         border-radius: 2px;
         text-transform: unset;
-        span{
-            font-family: "Google San" !important;
-            color:white;
-        }    
+        span {
+            font-family: "Lato" !important;
+            color: white;
+        }
+        label{
+            font-family: "Lato" !important;
+        }
     }
-    button.mainButton{
+    button span,button label,button svg{
+        cursor: pointer;
+    }
+    button.mainButton {
         background-color: $main_button_color;
-        color:white;
+        color: white;
     }
-    button.mainButtonBorder{
-        border:solid 1px $main_button_color;
-        color:white;
+    button.mainButtonBorder {
+        border: solid 1px $main_button_color;
+        color: white;
         background-color: transparent;
     }
     button:disabled {
         box-shadow: unset !important;
         cursor: no-drop;
     }
-    .myTextField{
-        div:nth-child(2)::before{
-            border-bottom:solid 1px #cccccc;
+    button.buttonSvg {
+        min-width: unset;
+        width: 36px;
+        padding: 5px;
+        min-height: unset;
+        svg {
+            width: 100%;
         }
-        div:nth-child(2){
+    }
+    .myTextField {
+        div:nth-child(2)::before {
+            border-bottom: solid 1px #cccccc;
+        }
+        div:nth-child(2) {
             color: #cccccc;
         }
-        div:nth-child(2):hover::before{
-            border-bottom:solid 2px $hight-light_color !important;
+        div:nth-child(2):hover::before {
+            border-bottom: solid 2px $hight-light_color !important;
         }
         [class*="MuiFormLabel-focused"] {
             color: $hight-light_color !important;
@@ -61,11 +77,11 @@
         [class*="MuiInputBase-focused"] {
             border-color: $hight-light_color !important;
         }
-        div:nth-child(2)::after{
+        div:nth-child(2)::after {
             border-color: $hight-light_color !important;
         }
     }
-    div.mainContent{
+    div.mainContent {
         flex-grow: 1;
         width: 90%;
         display: flex;

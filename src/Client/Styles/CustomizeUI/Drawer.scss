@@ -1,0 +1,170 @@
+@import '../Variable.scss';
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.drawerMain{
+    z-index: 99999999 !important;
+}
+.border16Input {
+    width: 50%;
+    height: 25px;
+    border: unset;
+    padding: 0px 10px;
+    border-radius: 16px;
+    background-color: #e0e0e0;
+    outline: unset;
+    font-size: 0.75em;
+}
+
+div.drawer {
+    height: calc(100vh / 2);
+    font-family: "Lato" !important;
+    div.drawerContainer {
+        height: 100%;
+        div.drawerLogo {
+            @extend .flexCenter;
+            flex-direction: column;
+            svg {
+                width: 45%;
+            }
+            label {
+                color: #333;
+                font-weight: bold;
+                font-size: 1.1em;
+            }
+        }
+        div.postForm {
+            padding: 10px 20px;
+            .postInput {
+                width: 100%;
+                legend[style="width: 113.75px;"] {
+                    width: 125px !important;
+                }
+                [class*="MuiPrivateNotchedOutline-focused"] {
+                    border-color: $main_button_color !important;
+                }
+                [class*="MuiFormLabel-focused"] {
+                    color: $main_button_color !important;
+                }
+                div:nth-child(2):hover fieldset,
+                fieldset {
+                    border-color: $main_button_color !important;
+                }
+                label:nth-child(1) {
+                    color: $main_button_color;
+                }
+            }
+            div.tagPost {
+                display: flex;
+                margin-top: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+                svg {
+                    width: 3.5%;
+                    height: 100%;
+                    margin-right: 5px;
+                    path {
+                        fill: #333
+                    }
+                }
+                div.tagChip {
+                    height: 23px;
+                    margin: 5px;
+                    border: solid 1px #e0e0e0;
+                    span {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        font-size: .9em;
+                    }
+                }
+                div.tagChipActive {
+                    border: solid 1px $main_button_color;
+                    background-color: transparent;
+                    span {
+                        color: $main_button_color;
+                    }
+                }
+                input {
+                    @extend .border16Input;
+                    max-width: 80px;
+                    background-color: #ccc;
+                }
+            }
+            div.locationPost {
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                input {
+                    @extend .border16Input;
+                }
+                svg {
+                    width: 3.5%;
+                    height: 100%;
+                    margin-right: 5px;
+                }
+            }
+            div.submitDiv {
+                margin-top: 20px;
+                text-align: center;
+                button {
+                    background-color: #ccc;
+                    text-transform: unset;
+                    [class*="MuiCircularProgress-root"] {
+                        color: $main_button_color !important;
+                    }
+                    min-width: 76.53px;
+                }
+            }
+        }
+        button.cancelButton {
+            position: absolute;
+            right: 10px;
+            min-width: unset;
+            min-height: unset;
+            width: 35px;
+            padding: 5px;
+            border-radius: 50%;
+            svg {
+                width: 100%;
+                path {
+                    fill: #d32f2f;
+                }
+            }
+        }
+        div.addImageForm {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            div:nth-child(1) {
+                width: 150px !important;
+                height: 150px !important;
+                border: solid 1px #ccc !important;
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+                svg {
+                    width: 30%;
+                }
+                img {
+                    width: 100%;
+                }
+                svg.cancelImage{
+                    width: 15%;
+                    position: absolute;
+                    top: -12px;
+                    right: -10px;
+                    z-index: 999999;
+                    path{
+                        fill:#d32f2f;
+                    }
+                }
+            }
+        }
+    }
+    label {
+        color: #cccccc;
+        font-family: "Lato" !important;
+    }
+}

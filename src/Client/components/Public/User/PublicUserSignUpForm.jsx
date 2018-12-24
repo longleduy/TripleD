@@ -14,12 +14,12 @@ import signStyles from '../../../Styles/Public/Sign.scss'
 import materialUIStyles from '../../../Styles/MaterialUICustomize.scss'
 //Todo: Commons
 import * as Validator from '../../../utils/commons/validator'
-import {ProgressBarButton} from '../../Commons/ProgressBarButton.jsx'
+import {ProgressBarButton} from '../../commons/ProgressBarButton.jsx'
 //Todo: GraphQl
 import {SIGN_UP_MUTATION} from '../../../graphql/mutations/user_mutation'
 import {CHECK_EMAIL_QUERY} from '../../../graphql/querys/user_query'
 //Todo: PropsRender
-import MutationPropRender from '../../HocOrProprender/MutationPropRender.jsx'
+import MutationPropRender from '../../hocOrProprender/MutationPropRender.jsx'
 
 function TransitionUp(props) {
     return <Slide {...props} direction="down" />;
@@ -123,6 +123,11 @@ class PublicUserSignUpForm extends PureComponent {
         const {open,snackBarMessage,snackBarStatus,signUpSuccess,autoHide} = this.state;
         return <Fragment>
             <Grid item xs={6} className={`${styles.content} ${styles.signIn} ${appStyles.flexDivCol}`}>
+                <div className={styles.signHeader}>
+                     <svg viewBox="0 0 24 24">
+                        <path fill="#cccccc" d="M10.25,2C10.44,2 10.61,2.11 10.69,2.26L12.91,6.22L13,6.5L12.91,6.78L10.69,10.74C10.61,10.89 10.44,11 10.25,11H5.75C5.56,11 5.39,10.89 5.31,10.74L3.09,6.78L3,6.5L3.09,6.22L5.31,2.26C5.39,2.11 5.56,2 5.75,2H10.25M10.25,13C10.44,13 10.61,13.11 10.69,13.26L12.91,17.22L13,17.5L12.91,17.78L10.69,21.74C10.61,21.89 10.44,22 10.25,22H5.75C5.56,22 5.39,21.89 5.31,21.74L3.09,17.78L3,17.5L3.09,17.22L5.31,13.26C5.39,13.11 5.56,13 5.75,13H10.25M19.5,7.5C19.69,7.5 19.86,7.61 19.94,7.76L22.16,11.72L22.25,12L22.16,12.28L19.94,16.24C19.86,16.39 19.69,16.5 19.5,16.5H15C14.81,16.5 14.64,16.39 14.56,16.24L12.34,12.28L12.25,12L12.34,11.72L14.56,7.76C14.64,7.61 14.81,7.5 15,7.5H19.5Z" />
+                    </svg>
+                </div>
                 <label className={`${styles.signTitle}`}>
                     Sign Up
                 </label>
@@ -162,6 +167,12 @@ class PublicUserSignUpForm extends PureComponent {
                         onChange={this.handleChangeDataForm}
                         onBlur={(e) => this.checkExistEmail(e)}
                     />
+                    <span className={signStyles.noteSign}>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#ccc" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
+                            </svg>
+                            <label>You can use letters, numbers & periods</label>
+                        </span>  
                     <Grid container className={signStyles.passForm}>
                         <Grid item xs={6}>
                             <TextField
@@ -189,7 +200,12 @@ class PublicUserSignUpForm extends PureComponent {
                             onKeyUp={(e) => this.validPassWord(e, $('#password'), 'RePass word')}
                         />
                         </Grid>
-                        <Link to="/sign/sign-in" className={signStyles.forgotPass}>Have account? Sign In.</Link>
+                        <span className={signStyles.noteSign}>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#ccc" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
+                            </svg>
+                            <label>Use 8 or more characters with a mix of letters, numbers & symbols</label>
+                        </span>          
                     </Grid>   
                     <Grid container className={signStyles.buttonDiv}>
                             <Grid item xs={6} className={signStyles.defaultSignIn}>
@@ -202,7 +218,19 @@ class PublicUserSignUpForm extends PureComponent {
                                  </Button>
                                 )}/>
                             </Grid>
-                        </Grid>                      
+                            {/* <Grid item xs={6} className={styles.linkSignButton}>
+                                <Link to="/sign/sign-in">
+                                    <Button>
+                                        Sign In                          
+                                    </Button>
+                                </Link>
+                            </Grid> */}
+                        </Grid> 
+                        <Link to="/sign/sign-in" className={signStyles.linkSignButton}>
+                            <Button>
+                                Sign In                          
+                            </Button>
+                        </Link>                     
                 </div>
                 <Snackbar  className={`${materialUIStyles.mySnackBar} ${materialUIStyles.topSnackBar}`+` ${snackBarStatus == 'success'?materialUIStyles.mySnackBarSucess:null}`}
                             anchorOrigin={{

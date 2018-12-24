@@ -8,7 +8,7 @@ export const htmlSignUpVerify = (to, urlEndPoint) => {
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     
-    <body style="font-family: Google Sans;font-size: 16px">
+    <body style="font-family: Latos;font-size: 16px">
         <div style="width: 100%; text-align: center">
             <label style="width: 100%;text-align: center;color: #ff3b00;font-size: 2em;font-weight: bold;">Unicron Sercure</label>
             <div style="width: 80%;margin:10px auto;">
@@ -20,7 +20,7 @@ export const htmlSignUpVerify = (to, urlEndPoint) => {
                     <label>Thanks for sign up! We just need you verify your email address to complete setting up your
                         account</label>
                     <!--  -->
-                    <a href='https://192.168.10.138:4000/graphql/?query={verifyEmail(secretKey: "${urlEndPoint}"){status}}' style="text-decoration: unset;"><input type="button" style="display: block; margin-top: 50px;font-family: 'Google Sans' !important;    padding: 8px;
+                    <a href='https://192.168.10.138:4000/graphql/?query={verifyEmail(secretKey: "${urlEndPoint}"){status}}' style="text-decoration: unset;"><input type="button" style="display: block; margin-top: 50px;font-family: 'Latos' !important;    padding: 8px;
                     background-color: #ff3b00;
                         border: none;
                         border-radius: 3px;

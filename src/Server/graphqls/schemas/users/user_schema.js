@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express'
 //Todo: Controllers
 import * as userAccountController from '../../../controllers/users/user_controller'
+import { authorizationMiddleWare } from '../../../middlewares/authorization_middleware'
 export const typeDefs = gql`
 interface  UserAccountInterface{
         firstName: String
@@ -11,7 +12,13 @@ interface  UserAccountInterface{
         gender: String
         level: String
         active: Boolean
-        avatar: String 
+        avatar: String
+        dateOfBirth:String
+        point:Int
+        rank:Int
+        facebookAdress:String
+        instagramAdress:String
+        posts:Int
     }
     type UserAccount implements UserAccountInterface{
         firstName: String
@@ -22,19 +29,16 @@ interface  UserAccountInterface{
         gender: String
         level: String
         active: Boolean
-        avatar: String 
+        avatar: String
+        dateOfBirth:String
+        point:Int
+        rank:Int
+        facebookAdress:String
+        instagramAdress:String
+        posts:Int
     }
-    type SignInInfo implements UserAccountInterface{
-        firstName: String
-        lastName: String
-        email: String
-        profileName: String
-        passWord: String
-        gender: String
-        level: String
-        active: Boolean
-        avatar: String 
-        jwt: String 
+    type SignInInfo {
+        jwt:String!
     }
     input formData {
         firstName: String
@@ -47,6 +51,20 @@ interface  UserAccountInterface{
         active: Boolean
         avatar: String
     }
+    input updateUserDataInput{
+        gender: String
+        dateOfBirth: String
+        facebookAdress:String
+        instagramAdress:String
+        avatar: String
+    }
+    type updateUserDataType{
+        gender: String
+        dateOfBirth: String
+        facebookAdress:String
+        instagramAdress:String
+        avatar: String
+    }
     type checkEmail {
         status: Boolean
     }
@@ -56,14 +74,18 @@ interface  UserAccountInterface{
     type boolean{
         isSuccess: Boolean
     }
+    type jwtRespone{
+        jwt: String!
+    }
     extend type Query{
         checkEmail(email: String!): checkEmail
         verifyEmail(secretKey: String!): verifyEmail
     }
     extend type Mutation {
         addNewUserAccount(formData: formData):UserAccountInterface
-        signIn(formData: formData): UserAccountInterface
+        signIn(formData: formData): jwtRespone
         signOut:boolean
+        updateUserInfo(updateUserDataInput: updateUserDataInput):updateUserDataType
     }
 `;
 export const resolvers = {
@@ -82,13 +104,16 @@ export const resolvers = {
         signIn: async (obj, args, { req }) => {
             const user = await userAccountController.signIn(args.formData);
             req.session.user = user;
-            return user;
+            return {jwt:user.jwt};
         },
         signOut: async (obj, args, { req }) => {
             await req.session.destroy();
             return {
                 isSuccess: true
             };
+        },
+        updateUserInfo: async (obj, args, { req,res }) => {
+            return authorizationMiddleWare(req,res, userAccountController.updateUserInfo,args.updateUserDataInput);
         }
     },
     UserAccountInterface: {
