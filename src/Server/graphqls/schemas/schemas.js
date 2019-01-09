@@ -12,7 +12,12 @@ const Mutation = gql`
         _empty: String
     }
 `
+const Subscription = gql`
+    type Subscription{
+        _empty: String
+    }
+    `
 export const schema = makeExecutableSchema({
-    typeDefs: [Query,Mutation,userAccountSchema,postSchema],
+    typeDefs: [Query,Mutation,Subscription,userAccountSchema,postSchema],
     resolvers: [userAccountResolver,postResolver]
 })

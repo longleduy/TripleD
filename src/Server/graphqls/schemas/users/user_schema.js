@@ -80,6 +80,7 @@ interface  UserAccountInterface{
     extend type Query{
         checkEmail(email: String!): checkEmail
         verifyEmail(secretKey: String!): verifyEmail
+        asyncForEach:boolean
     }
     extend type Mutation {
         addNewUserAccount(formData: formData):UserAccountInterface
@@ -95,6 +96,9 @@ export const resolvers = {
          },
         verifyEmail: (obj, args, context) => {
             return userAccountController.verifyEmail(args.secretKey);
+        },
+        asyncForEach: (obj, args, context) => {
+            return userAccountController.asyncForEach();
         }
      },
     Mutation: {

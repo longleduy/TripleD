@@ -54,17 +54,8 @@ const connectApolloServer = async () => {
   } else {
     sslServer = http.createServer(app)
   }
-  //server.installSubscriptionHandlers(sslServer)
-  sslServer.listen({ port: `${ServerInfo.SERVER_PORT}` },() => {
-    new SubscriptionServer({
-      execute,
-      subscribe,
-      schema:schema,
-    }, {
-      server: sslServer,
-      path: '/subscriptions',
-    });
-});
+  server.installSubscriptionHandlers(sslServer)
+  sslServer.listen({ port: `${ServerInfo.SERVER_PORT}`});
 }
   const run = async () => {
     try {

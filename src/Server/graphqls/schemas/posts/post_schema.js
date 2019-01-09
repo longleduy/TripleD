@@ -2,10 +2,12 @@ import { gql } from 'apollo-server-express'
 import {PubSub, withFilter} from 'graphql-subscriptions'
 import {createPost,getLimitedPosts,getCountInfo,likePost,delPost,commentPost,loadMoreComment} from '../../../controllers/posts/post_controller'
 import { authorizationMiddleWare } from '../../../middlewares/authorization_middleware'
+import delay from 'delay'
 const pubsub = new PubSub();
 
 const POST_LIKED = 'POST_LIKED'
-
+const CREATE_POST_SUB = 'CREATE_POST_SUB'
+const COMMENT_POST_SUB = 'COMMENT_POST_SUB'
 export const typeDefs = gql`
     type Post {
         id: String
@@ -69,6 +71,18 @@ export const typeDefs = gql`
         tag: [String]!
         count:Count!
     }
+    type createPostDataSub{
+        id: String
+        userInfo:userInfo
+        isAuthor: Boolean
+        content: String!
+        image:String
+        postTime: String!
+        postDate: String!
+        location: String
+        tag: [String]!
+        count:Count!
+    }
     type likeRespone{
         likes: Int
         liked: Boolean
@@ -89,8 +103,10 @@ export const typeDefs = gql`
         delPost(postID: String!,likes: Int!,comments: Int!,views: Int!):status,
         commentPost(postID: String!,commentContent: String!,commentImage: String!,commentCount: Int!):newComment
     }
-    type Subscription{
+    extend type Subscription{
         postLiked: likeResSub
+        createPostSub: createPostData
+        commentPostSub(postID:String!): newComment
     }
 `;
 export const resolvers = {
@@ -122,11 +138,11 @@ export const resolvers = {
         }
     },
     createPostData: {
-        userInfo: async (obj, args, { req, res }) => {
+        userInfo: async (obj, args, { req, res }) => {   
             return {
-                id: req.session.user._id,
-                profileName: req.session.user.profileName,
-				avatar: req.session.user.avatar
+                id:obj.idUser,
+                profileName:obj.profileName,
+				avatar:obj.avatarUser
             }
         },
         count: async (obj, args, { req, res }) => {
@@ -141,10 +157,10 @@ export const resolvers = {
     newComment: {
         userInfoComment: async (obj, args, { req, res }) => {
             return {
-                id: req.session.user._id,
-                profileName: req.session.user.profileName,
-				avatar: req.session.user.avatar
-            };
+                id:obj.idUser,
+                profileName:obj.profileName,
+				avatar:obj.avatarUser
+            }
         }
     },
     loadComment: {
@@ -156,11 +172,12 @@ export const resolvers = {
         createPost: async (obj, args, { req, res }) => {
             let data = await authorizationMiddleWare(req, res, createPost, args.postData);
             data["__typename"]="Post";
+            pubsub.publish(CREATE_POST_SUB,{createPostSub:data});
             return data;
         },
         likePost: async (obj, args, { req, res }) => { 
             const data = await authorizationMiddleWare(req, res, likePost, args.likeData);
-            await pubsub.publish(POST_LIKED,{postLiked:{
+            pubsub.publish(POST_LIKED,{postLiked:{
                 postID: args.likeData.postID,
                 likes: data.likes
             }});
@@ -170,14 +187,25 @@ export const resolvers = {
             return await authorizationMiddleWare(req, res, delPost, args);
         },
         commentPost: async (obj, args, { req, res }) => {
-            return await authorizationMiddleWare(req, res, commentPost, args);
+            const data = await authorizationMiddleWare(req, res, commentPost, args);
+            pubsub.publish(COMMENT_POST_SUB,{commentPostSub:data,postID:args.postID})
+            return data;
         }
     },
     Subscription: {
         postLiked : {
-            subscribe: () => {
-              return  pubsub.asyncIterator(POST_LIKED);
-            }
+            subscribe: () => pubsub.asyncIterator(POST_LIKED)
+        },
+        createPostSub: {
+            subscribe: () => pubsub.asyncIterator(CREATE_POST_SUB)
+        },
+        commentPostSub: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(COMMENT_POST_SUB),
+                (payload,variables) => {
+                    return payload.postID === variables.postID
+                }
+            )
         }
     }
 }

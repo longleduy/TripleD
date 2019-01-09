@@ -23,16 +23,6 @@ export const CREATE_POST_MUTATION = gql`
 				comments
 				views
 			}
-
-			newComment {
-			commentContent
-			userInfoComment{
-				profileName
-				avatar
-				}
-			commentDate
-			commentTime
-			}
 		}
 }
 `;

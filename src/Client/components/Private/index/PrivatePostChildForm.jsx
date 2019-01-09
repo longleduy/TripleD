@@ -8,11 +8,11 @@ import Textarea from 'react-textarea-autosize'
 import postStyles from '../../../Styles/Post.scss'
 import appStyles from '../../../Styles/App.scss'
 //Todo: Component
-import { PrivatePostChildCommentBox } from './Post/PrivatePostChildCommentBox.jsx'
+import { PrivatePostChildCommentBox } from '../../../contaniners/private/index/post/PrivatePostChildCommentBox.jsx'
 //Todo: RenderProps 
 import MutationPropRender from '../../hocOrProprender/MutationPropRender.jsx'
 //Todo: GraphQl
-import { GET_LIMITED_POSTS,LOAD_MORE_CMT_QUERY } from '../../../graphql/querys/post_query'
+import { GET_LIMITED_POSTS, LOAD_MORE_CMT_QUERY } from '../../../graphql/querys/post_query'
 import { LIKE_POST_MUTATION, DEL_POST_MUTATION, COMMENT_POST_MUTATION } from '../../../graphql/mutations/post_mutation'
 import { isBuffer } from 'util';
 let count;
@@ -74,12 +74,13 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
     const cancelDelPostHandle = () => {
         setDelPost(false)
     }
-    const commentPost = (e, postID, commentCount,index, action) => {
+    const commentPost = (e, postID, commentCount, index, action) => {
         const commentContent = $(e.target).val();
         if (commentContent != '') {
             const result = action({
                 variables: { postID, commentContent, commentImage: '', commentCount },
-                update:(store,{data:{commentPost}}) => {
+                 update: (store, { data: { commentPost } }) => {
+                    if (!viewComment) {
                     let result = store.readQuery({
                         query: GET_LIMITED_POSTS,
                         variables: { limitNumber: 5, skipNumber: 0 }
@@ -91,22 +92,23 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                             variables: { limitNumber: 5, skipNumber: 0 },
                             data: result
                         });
-                        setViewComment(true);
-                    }
-                    if(viewComment){
-                        let result2 = store.readQuery({
-                            query: LOAD_MORE_CMT_QUERY,
-                            variables: { postID,limitNumber: 3, skipNumber: null }
-                        });
-                        if (result2 != null) {
-                            result2.loadMoreComment.push(commentPost);
-                            store.writeQuery({
-                                query: LOAD_MORE_CMT_QUERY,
-                                variables: { postID,limitNumber: 3, skipNumber: null },
-                                data: result2
-                            });
+                           setViewComment(true);
                         }
                     }
+                    // if (!viewComment) {
+                    //     let result2 = store.readQuery({
+                    //         query: LOAD_MORE_CMT_QUERY,
+                    //         variables: { postID, limitNumber: 3, skipNumber: null }
+                    //     });
+                    //     if (result2 != null) {
+                    //         result2.loadMoreComment.push(commentPost);
+                    //         store.writeQuery({
+                    //             query: LOAD_MORE_CMT_QUERY,
+                    //             variables: { postID, limitNumber: 3, skipNumber: null },
+                    //             data: result2
+                    //         });
+                    //     }
+                    // }
                 }
             })
         }
@@ -121,7 +123,7 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                         <label className={postStyles.labelAvatar}>{post.userInfo.profileName.charAt(0)}</label>}
                     <div className={postStyles.postUserName}>
                         <label className={postStyles.profileName}>{post.userInfo.profileName}</label>
-                        <label className={postStyles.postDate}>{post.postDate}</label>
+                        <label className={postStyles.postDate} name="postDate">{post.postDate}</label>
                     </div>
                 </Grid>
                 <Grid item xs={6}>
@@ -187,7 +189,7 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                                         : <path fill="#cccc" d="M12,21.1L10.5,22.4C3.9,16.5 0.5,13.4 0.5,9.6C0.5,8.4 0.9,7.3 1.5,6.4C1.5,6.6 1.5,6.8 1.5,7C1.5,11.7 5.4,15.2 12,21.1M13.6,17C18.3,12.7 21.5,9.9 21.6,7C21.6,5 20.1,3.5 18.1,3.5C16.5,3.5 15,4.5 14.5,5.9H12.6C12,4.5 10.5,3.5 9,3.5C7,3.5 5.5,5 5.5,7C5.5,9.9 8.6,12.7 13.4,17L13.5,17.1M18,1.5C21.1,1.5 23.5,3.9 23.5,7C23.5,10.7 20.1,13.8 13.5,19.8C6.9,13.9 3.5,10.8 3.5,7C3.5,3.9 5.9,1.5 9,1.5C10.7,1.5 12.4,2.3 13.5,3.6C14.6,2.3 16.3,1.5 18,1.5Z" />
                                     }
                                 </svg>
-                                <label className={post.count.liked ? postStyles.labelLiked : null}>{post.count.likes} likes</label>
+                                <label className={post.count.liked ? postStyles.labelLiked : null}>{post.count.likes} votes</label>
                             </Button>
                         )} />
                     <Button className={`${appStyles.buttonSvg}`} onClick={() => setViewComment(true)}>
@@ -203,7 +205,7 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                         <label>{post.count.views} reports</label>
                     </Button>
                 </span>
-                {viewComment && post.count.comments >0 &&<PrivatePostChildCommentBox countCount={post.count} postID={post.id}/>}
+                {viewComment && post.count.comments > 0 && <PrivatePostChildCommentBox countCount={post.count} postID={post.id} idx={index}/>}
                 <Grid item xs={12} className={postStyles.postCommentBox}>
                     <MutationPropRender mutation={COMMENT_POST_MUTATION}
                         mutationPropRender={(action) => (
@@ -211,7 +213,7 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                                 onKeyPress={(e) => {
                                     if (e.which == 13 && !e.shiftKey) {
                                         e.preventDefault();
-                                        return commentPost(e, post.id, post.count.comments,index, action);
+                                        return commentPost(e, post.id, post.count.comments, index, action);
                                     }
                                 }}
                             />

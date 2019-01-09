@@ -29,6 +29,9 @@ export const createPost = async (postData, req = null, res = null) => {
         result['isAuthor'] = true;
         result['postDate'] = postDate;
         result['postTime'] = postTime;
+        result['idUser'] = req.session.user._id,
+        result['profileName'] = req.session.user.profileName,
+        result['avatarUser'] = req.session.user.avatar                   
         return result;
     }
     throw new Error();
@@ -141,7 +144,10 @@ export const commentPost = async (commentData, req = null, res = null) => {
     if(status > 0) return {
         commentContent:commentContent,
         commentImage: commentImage,
-        commentDate:stringDate
+        commentDate:stringDate,
+        idUser: req.session.user._id,
+        profileName: req.session.user.profileName,
+        avatarUser: req.session.user.avatar 
     }
     throw new Error('Comment Error')
 }

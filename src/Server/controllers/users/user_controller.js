@@ -1,6 +1,8 @@
 import { mongo } from 'mongoose'
 //Todo: Model
 import { userModel } from '../../models/user_model'
+import fs from 'fs'
+import util from 'util'
 //Todo: Utils
 import * as passWordUtil from '../../utils/password_util'
 import { emailSender } from '../../utils/email_sender'
@@ -12,6 +14,8 @@ import { uploadImage } from '../../utils/common'
 import {refreshJWT} from '../../middlewares/refresh_jwt'
 //Todo: Contants
 import {ACCOUNT_NOT_AVAILABLE, WRONG_PASSWORD, ERROR_EMAIL_NOT_VERIFY} from '../../utils/contants/error_message_contants'
+
+const readFile = util.promisify(fs.readFile);
 
 export const checkEmail = async (email) => {
     const result = await userModel.find({ email });
@@ -133,4 +137,35 @@ export const updateUserInfo =  async (updateData, req,res) => {
     }
     await refreshJWT(req,res,result);
     return result;
+}
+export const asyncForEach = async () => {
+    const start = Date.now()
+  let i = 0
+  function res(n) {
+    const id = ++i
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve()
+        console.log(`res #${id} called after ${n} milliseconds`, Date.now() - start)
+      }, n)
+    })
+  }
+  const arr = [3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
+   arr.forEach(async (val,idx)=> {
+      const delay = await  res(val);
+      console.log(`Delay: ${val}`);
+  })
+  console.log("Done");
+//   const d3 = await delay3;
+//   const d = await delay1;
+//   const d2 = await delay2;
+    //  var indexArr = [0, 1, 2, 3, 4, 5, 9];
+    //  indexArr.forEach(async (val, index) => {
+    //     const data = await userModel.find({}).skip(val).limit(1);
+    //     console.log(data);
+    //  })
+    // console.log("Done");
+    // return {
+    //     isSuccess : false
+    // }
 }
