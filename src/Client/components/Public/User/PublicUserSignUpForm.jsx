@@ -142,6 +142,7 @@ class PublicUserSignUpForm extends PureComponent {
                             margin="normal"
                             className={`${signStyles.textField} ${appStyles.myTextField}`}
                             onChange={this.handleChangeDataForm}
+                            onKeyPress={(e) => Validator.onlyLetter(e)}
                         />
                         </Grid>
                         <Grid item xs={6}>
@@ -153,6 +154,7 @@ class PublicUserSignUpForm extends PureComponent {
                             margin="normal"
                             className={`${signStyles.textField} ${appStyles.myTextField} ${signStyles.pass2}`}
                             onChange={this.handleChangeDataForm}
+                            onKeyPress={(e) => Validator.onlyLetter(e)}
                         />
                         </Grid>
                     </Grid> 

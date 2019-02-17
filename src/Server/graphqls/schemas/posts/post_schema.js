@@ -2,12 +2,15 @@ import { gql } from 'apollo-server-express'
 import {PubSub, withFilter} from 'graphql-subscriptions'
 import {createPost,getLimitedPosts,getCountInfo,likePost,delPost,commentPost,loadMoreComment} from '../../../controllers/posts/post_controller'
 import { authorizationMiddleWare } from '../../../middlewares/authorization_middleware'
+import {sendMessage} from '../../../controllers/chats/chat_controller'
+import {getChatChanelID} from '../../../utils/common'
 import delay from 'delay'
 const pubsub = new PubSub();
 
 const POST_LIKED = 'POST_LIKED'
 const CREATE_POST_SUB = 'CREATE_POST_SUB'
 const COMMENT_POST_SUB = 'COMMENT_POST_SUB'
+const COMMENT_POST_COUNT_SUB = 'COMMENT_POST_COUNT_SUB'
 export const typeDefs = gql`
     type Post {
         id: String
@@ -91,6 +94,17 @@ export const typeDefs = gql`
         postID: String!
         likes: Int
     }
+    type newCommentCountSub{
+        postID: String!
+    }
+    type notificationPostResSub{
+        formUserName: String!
+        formUserAvatar: String
+        action: String!
+        postID: String
+        content:String
+        actionTime: String!
+    }
     extend type Query{
         getAllPost: [Post]
         getLimitedPost(limitNumber: Int!,skipNumber: Int!):[Post]
@@ -107,6 +121,9 @@ export const typeDefs = gql`
         postLiked: likeResSub
         createPostSub: createPostData
         commentPostSub(postID:String!): newComment
+        commentPostCountSub: newCommentCountSub
+        notificationPostSub(userID: String!): notificationPostResSub
+        newMessageSub(from: String!,to: String!): ChatInfo
     }
 `;
 export const resolvers = {
@@ -175,12 +192,21 @@ export const resolvers = {
             pubsub.publish(CREATE_POST_SUB,{createPostSub:data});
             return data;
         },
+        sendMessage: async (obj, args, { req, res }) => {
+            const data = await authorizationMiddleWare(req, res, sendMessage, args);
+            pubsub.publish('NEW_MESSAGE_SUB',{newMessageSub:data});
+            pubsub.publish('NOTIFICATION_POST_SUB',getNotiInfor(data.notificationInfo))
+            return data;
+        },
         likePost: async (obj, args, { req, res }) => { 
             const data = await authorizationMiddleWare(req, res, likePost, args.likeData);
             pubsub.publish(POST_LIKED,{postLiked:{
                 postID: args.likeData.postID,
                 likes: data.likes
             }});
+            if(data.notificationInfo){
+                pubsub.publish('NOTIFICATION_POST_SUB',getNotiInfor(data.notificationInfo))
+            }
             return data;
         },
         delPost: async (obj, args, { req, res }) => {
@@ -188,7 +214,13 @@ export const resolvers = {
         },
         commentPost: async (obj, args, { req, res }) => {
             const data = await authorizationMiddleWare(req, res, commentPost, args);
-            pubsub.publish(COMMENT_POST_SUB,{commentPostSub:data,postID:args.postID})
+            pubsub.publish(COMMENT_POST_SUB,{commentPostSub:data,postID:args.postID});
+            pubsub.publish(COMMENT_POST_COUNT_SUB,{commentPostCountSub:{
+                postID: args.postID
+            }});
+            if(data.notificationInfo){
+                pubsub.publish('NOTIFICATION_POST_SUB',getNotiInfor(data.notificationInfo))
+            }
             return data;
         }
     },
@@ -206,6 +238,40 @@ export const resolvers = {
                     return payload.postID === variables.postID
                 }
             )
+        },
+        commentPostCountSub: {
+            subscribe: () => pubsub.asyncIterator(COMMENT_POST_COUNT_SUB)
+        },
+        notificationPostSub: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator('NOTIFICATION_POST_SUB'),
+                (payload,variables) => {
+                    return payload.notificationPostSub.userID === variables.userID
+                }
+            )
+        },
+        newMessageSub : {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator('NEW_MESSAGE_SUB'),
+                (payload,variables) => {
+                    let {from,to} = variables;
+                    let chanelID = getChatChanelID(from,to)
+                    return payload.newMessageSub.chanelID === chanelID;
+                }
+            )
+    },
+    }
+}
+export const getNotiInfor = (notificationInfo) => {
+    return {
+        notificationPostSub: {
+            userID: notificationInfo.userID,
+            formUserName: notificationInfo.formUserName,
+            formUserAvatar: notificationInfo.formUserAvatar,
+            action: notificationInfo.action,
+            postID:notificationInfo.postID,
+            content: notificationInfo.content,
+            actionTime:'Just now'
         }
     }
 }

@@ -15,3 +15,21 @@ query GetAuthen{
 	}
 	}
 `;
+export const GET_NOTIFICATION_INFO = gql`
+query GetNotificationInfo{
+	getNotificationInfo{
+        newNotifications{
+            messages
+            likeAndComments
+            }
+        newestNotificationInfo{
+            formUserName
+            formUserAvatar
+            action
+            content
+            postID
+            actionTime
+            }
+        }
+	}
+`;

@@ -12,6 +12,7 @@ import { createHttpLink } from "apollo-link-http"
 import { setContext } from 'apollo-link-context'
 import { withClientState } from 'apollo-link-state'
 import { WebSocketLink } from 'apollo-link-ws'
+
 import $ from 'jquery'
 import 'typeface-roboto'
 import Favicon from 'react-favicon'
@@ -19,7 +20,7 @@ import App from './App.jsx'
 import Logo from "../../public/images/logo/favicon.png"
 import { HOST,WSS, SERVER_PORT, GRAPHQL_ENDPOINT } from '../Configs/_host_contants'
 //Todo: Utils
-import {mutationUserInfo} from './graphql/local/mutation'
+import {mutationUserInfo,mutationChatChanel} from './graphql/local/mutation'
 import { getCacheLocalStorage } from './graphql/local/defaults'
 import ApolloProviderPropsRender from './ApolloProviderHOC'
 const cache = new InMemoryCache({
@@ -30,13 +31,15 @@ const wsLink = new WebSocketLink({
     options: {
       reconnect: true,
     },
+    credentials: 'include'
 });
 //Todo: Apollo link state
 const stateLink = withClientState({
     cache,
     resolvers: {
         Mutation: {
-            mutationUserInfo: mutationUserInfo
+            mutationUserInfo: mutationUserInfo,
+            mutationChatChanel: mutationChatChanel
         }
     },
     defaults: getCacheLocalStorage()

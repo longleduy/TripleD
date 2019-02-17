@@ -100,3 +100,8 @@ export const cleanError = (e, text) => {
         $(e.target).parent().prev('label').text(text);
     }
 }
+export const onlyLetter = (e) => {
+    if(e.which < 65 || e.which == 91 || e.which == 92 || e.which == 93 || e.which == 94 || e.which > 122 /* z */) {
+        e.preventDefault();
+    }
+}

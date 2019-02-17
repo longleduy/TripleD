@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http'
 import cloudinary from 'cloudinary'
 import { userAccountTest } from './users/user_test'
 import {createPost} from './posts/post_test'
-import {asyncForeachTest} from '../controllers/test'
+import {emailBufferModel} from '../models/email_buffer_model'
 const should = chai.should()
 chai.use(chaiHttp)
 cloudinary.config({
@@ -19,12 +19,13 @@ describe('Main', () => {
     //userAccountTest();
     //getListLibFrame();
     //createPost();
+    
     describe('TestUpload', () => {
-        it('upload success', async () => {
+        it('upload success', (done) => {
             try {
-               const data = await asyncForeachTest();
-               console.log(data);
-               done();
+                emailBufferModel.find({},(err,data) => {
+                    console.log(data);
+                });
                 // const result = await cloudinary.v2.uploader.upload('\public/images/avatar/avatar.jpg',
                 //     { width: 300,height: 300,radius: 'max',crop: "scale" });
                 // console.log(result.secure_url);

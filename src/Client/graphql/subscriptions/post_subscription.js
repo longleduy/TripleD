@@ -6,6 +6,13 @@ export const POST_LIKE_SUBSCRIPTION = gql`
     }
 }
 `;
+export const POST_COMMENT_COUNT_SUBSCRIPTION = gql`
+	subscription CommentPostCountSub{
+		commentPostCountSub{
+        	postID
+    }
+}
+`;
 export const CREATE_POST_SUBSCRIPTION = gql`
 	subscription CreatePostSub{
         createPostSub{

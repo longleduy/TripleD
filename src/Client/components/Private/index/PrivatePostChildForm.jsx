@@ -81,34 +81,8 @@ export const PrivatePostChildForm = withApollo(React.memo((props) => {
                 variables: { postID, commentContent, commentImage: '', commentCount },
                  update: (store, { data: { commentPost } }) => {
                     if (!viewComment) {
-                    let result = store.readQuery({
-                        query: GET_LIMITED_POSTS,
-                        variables: { limitNumber: 5, skipNumber: 0 }
-                    });
-                    if (result != null) {
-                        result.getLimitedPost[index].count.comments += 1;
-                        store.writeQuery({
-                            query: GET_LIMITED_POSTS,
-                            variables: { limitNumber: 5, skipNumber: 0 },
-                            data: result
-                        });
                            setViewComment(true);
-                        }
                     }
-                    // if (!viewComment) {
-                    //     let result2 = store.readQuery({
-                    //         query: LOAD_MORE_CMT_QUERY,
-                    //         variables: { postID, limitNumber: 3, skipNumber: null }
-                    //     });
-                    //     if (result2 != null) {
-                    //         result2.loadMoreComment.push(commentPost);
-                    //         store.writeQuery({
-                    //             query: LOAD_MORE_CMT_QUERY,
-                    //             variables: { postID, limitNumber: 3, skipNumber: null },
-                    //             data: result2
-                    //         });
-                    //     }
-                    // }
                 }
             })
         }

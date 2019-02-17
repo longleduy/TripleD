@@ -1,5 +1,12 @@
 @import './Variable.scss';
 @import './Font.scss';
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #555;
+}
 .app {
     font-family: "Lato" !important;
     background-color: $app_background;

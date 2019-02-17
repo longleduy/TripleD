@@ -1,4 +1,5 @@
-export const htmlSignUpVerify = (to, urlEndPoint) => {
+import {HOST,SERVER_PORT} from '../../../Configs/_host_contants'
+export const htmlSignUpVerify = (urlEndPoint,email) => {
     return `<html>
 
     <head>
@@ -8,25 +9,26 @@ export const htmlSignUpVerify = (to, urlEndPoint) => {
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     
-    <body style="font-family: Latos;font-size: 16px">
+    <body style="font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;font-size: 16px">
         <div style="width: 100%; text-align: center">
             <label style="width: 100%;text-align: center;color: #ff3b00;font-size: 2em;font-weight: bold;">Unicron Sercure</label>
             <div style="width: 80%;margin:10px auto;">
                 <div style="text-align: center;width: 40%;float: left;">
-                    <img style="width: 60%;" src="https://uphinhnhanh.com/images/2018/09/09/sign-in.png" />
+                    <img style="width: 60%;" src="https://res.cloudinary.com/seatechit/image/upload/v1550111223/sign-in.png" />
                 </div>
                 <div style="width: 50%;float: left;text-align: left;">
-                    <label style="font-weight: bold;display: block;margin: 15px 0px;">Hi! longldseatchit@gmail.com</label>
+                    <label style="font-weight: bold;display: block;margin: 15px 0px;">Hi! ${email}</label>
                     <label>Thanks for sign up! We just need you verify your email address to complete setting up your
                         account</label>
                     <!--  -->
-                    <a href='https://192.168.10.138:4000/graphql/?query={verifyEmail(secretKey: "${urlEndPoint}"){status}}' style="text-decoration: unset;"><input type="button" style="display: block; margin-top: 50px;font-family: 'Latos' !important;    padding: 8px;
+                    <a href='${HOST}:${SERVER_PORT}/graphql/?query={verifyEmail(secretKey: "${urlEndPoint}"){status}}' style="text-decoration: unset;"><input type="button" style="display: block; margin-top: 50px;font-family: 'Latos' !important;    padding: 8px;
                     background-color: #ff3b00;
                         border: none;
                         border-radius: 3px;
                         box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
                         color: white;
-                        font-size:14px;"
+                        font-size:14px;
+                        font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;"
                             value="Verify email address" /></a>
                 </div>
             </div>

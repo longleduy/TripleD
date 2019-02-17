@@ -44,3 +44,15 @@ mutation UpdateUserInfo($updateUserDataInput: updateUserDataInput){
   }
 }
 `;
+export const UPDATE_CHAT_BOX_MUTATION = gql`        
+mutation mutationChatChanel($isOpen: isOpen,$to: to){
+    mutationChatChanel(isOpen:$isOpen,to: $to) @client {
+		isOpen
+		toUser{
+			profileName
+			id
+			avatar
+		}
+	}
+}
+`;

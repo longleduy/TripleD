@@ -1,0 +1,129 @@
+div.resultDiv {
+    svg.loadingResult {
+        width: 15px;
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        fill: #ccc;
+    }
+    div.resultMainDiv {
+        width: 100%;
+        top: 45px;
+        position: absolute;
+        border-radius: 5px;
+        background-color: #ccc;
+        box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+        div.userSearchResultDiv {
+            span.userInfo:hover{
+                background-color: #b1b1b1;
+            }
+            span.userInfo {
+                transition: 200ms;
+                display: flex;
+                margin: 2px 0px;
+                align-items: center;
+                padding: 7px 10px;
+                label.avatarLabel {
+                    margin-right: 5px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: #f95353;
+                    border-radius: 50%;
+                    text-align: center;
+                    line-height: 30px;
+                    font-size: .9em;
+                    color: white;
+                    border: solid 1px;
+                    margin-left: 0px;
+                    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+                }
+                img.avatar {
+                    margin-right: 5px;
+                    width: 30px;
+                    border: solid 1px;
+                    border-radius: 50%;
+                    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+                }
+                label {
+                    color: #333;
+                    font-weight: bold;
+                }
+                label.paddingWord{
+                    margin-left: 5px;
+                }
+            }
+        }
+        label.notFoundLabel {
+            width: 100%;
+            display: block;
+            text-align: center;
+            margin: 10px;
+            color: #333;
+            font-size: .9em;
+            font-weight: bold;
+        }
+    }
+    div.postSearchResultDiv {
+        div.postContent {
+            background-color: #b1b1b1;
+            padding: 5px 10px;
+            margin: 5px 0px;
+            label.contentPost {
+                color: #333;
+                font-size: .9em;
+                font-weight: bold;
+                width: 100%;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                display: inline-block;
+                text-overflow: ellipsis;
+                label{
+                    color: #333;
+                }
+            }
+            span.postIndo {
+                display: flex;
+                margin: 10px 0px 2px 0px;
+                text-align: right;
+                label {
+                    color: #333;
+                    font-size: .8em;
+                    font-weight: bold;
+                    flex-grow: 1;
+                }
+                label.dateTime {
+                    display: flex;
+                    align-items: center;
+                    font-size: .7em;
+                    color: #ef2d0d;
+                    justify-content: flex-start;
+                    svg {
+                        width: 13px;
+                        margin-right: 5px;
+                        path {
+                            fill: #ef2d0d;
+                        }
+                    }
+                }
+                label.labelName {
+                    display: flex;
+                    align-items: center;
+                    font-size: .7em;
+                    color: #ef2d0d;
+                    justify-content: flex-end;
+                    img {
+                        width: 15px;
+                        border: solid 1px white;
+                        border-radius: 50%;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+    label.fillColor{
+        color: red !important;
+    }
+}

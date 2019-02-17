@@ -110,6 +110,42 @@
                         background-color: #ccc;
                         transition: 300ms;
                     }
+                    svg.addImageBtnActiv{
+                        border-color: #ff3b00;
+                        path{
+                            fill: #ff3b00;
+                        }
+                    }
+                }
+                div.addImageForm {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 15px;
+                    div:nth-child(1) {
+                        width: 80px !important;
+                        height: 80px !important;
+                        border: solid 1px #ccc !important;
+                        display: flex;
+                        justify-content: center;
+                        padding: 10px;
+                        svg {
+                            width: 30%;
+                        }
+                        img {
+                            width: 100%;
+                        }
+                        svg.cancelImage{
+                            width: 15%;
+                            position: absolute;
+                            top: -12px;
+                            right: -10px;
+                            z-index: 999999;
+                            path{
+                                fill:#d32f2f;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -125,9 +161,13 @@
             }
             button:first-child {
                 background-color: #ccc;
+                min-width: 84.58px;
                 box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
                 span {
                     color: $app_background;
+                }
+                [class*="MuiCircularProgress-root"] {
+                    color: $main_button_color !important;
                 }
             }
             button:last-child {

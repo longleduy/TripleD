@@ -19,16 +19,16 @@ class PrivatePostChildCommentBoxForm extends PureComponent {
                 let comment = result.subscriptionData.data.commentPostSub;
                 let newList = [...prev.loadMoreComment];
                 newList.push(comment);
-                let newData = this.props.client.readQuery({
-                    query: GET_LIMITED_POSTS,
-                    variables: { limitNumber: 5, skipNumber: 0 }
-                });
-                newData.getLimitedPost[index].count.comments += 1;
-                this.props.client.writeQuery({
-                    query: GET_LIMITED_POSTS,
-                    variables: { limitNumber: 5, skipNumber: 0 },
-                    data: newData
-                });
+                // let newData = this.props.client.readQuery({
+                //     query: GET_LIMITED_POSTS,
+                //     variables: { limitNumber: 5, skipNumber: 0 }
+                // });
+                // newData.getLimitedPost[index].count.comments += 1;
+                // this.props.client.writeQuery({
+                //     query: GET_LIMITED_POSTS,
+                //     variables: { limitNumber: 5, skipNumber: 0 },
+                //     data: newData
+                // });
                 return {
                     loadMoreComment: newList
                 }

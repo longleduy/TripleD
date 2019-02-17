@@ -3,13 +3,26 @@
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
     background-color: rgba(33, 33, 33, .8) !important;
 }
-.boxShadow{
+
+.boxShadow {
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
 }
-.fixDiv{
+
+.fixDiv {
     position: fixed !important;
     top: 64px;
 }
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexCol {
+    display: flex;
+    flex-direction: column;
+}
+
 .header {
     z-index: 99999;
     min-height: 64px;
@@ -53,59 +66,59 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-end;
-                div.rightHeader{
+                div.rightHeader {
                     width: 100%;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                     justify-content: flex-end;
-                    div.divMenu{
+                    div.divMenu {
                         margin-right: 15px;
                         display: flex;
                         flex-direction: row;
-                        div.divSearch{
+                        width: 100%;
+                        div.divSearch {
+                            width: 35%;
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
+                            position: relative;
                         }
-                        span.spanMenuButton{
+                        span.spanMenuButton {
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
                             margin: 0px 10px;
-                            button{
+                            button {
                                 width: 30px;
                             }
                         }
-                        input.searchInput{
-                            min-width: 350px;
+                        input.searchInput {
                             padding: 7px 15px;
                             background-color: rgba(23, 22, 22, .7);
                             border: solid 1px transparent;
                             transition: 300ms;
                             color: #ccc;
-                            border-radius: 16px;
+                            border: solid 1px #ccc;
+                            border-radius: 5px;
                             outline: unset;
                             font-family: "Lato" !important;
                         }
-                        input.searchInput:hover{
-                            border: solid 1px #ccc;
-                        }
-                        button.menuButton{
+                        button.menuButton {
                             margin: 0px 5px;
                             width: unset;
                             transition: 1500ms;
                             position: relative;
-                            span{
+                            span {
                                 display: flex;
                                 flex-direction: column;
-                                label.buttonLabel{
+                                label.buttonLabel {
                                     font-size: .7em;
                                     transition: 1500ms;
                                     font-weight: bold;
                                 }
-                                label.countNoti{
+                                label.countNoti {
                                     font-size: 0.8em;
                                     position: absolute;
                                     z-index: 99;
@@ -119,7 +132,7 @@
                                     line-height: 17px;
                                     border-radius: 50%;
                                 }
-                                label.countMess{
+                                label.countMess {
                                     font-size: .6em;
                                     border-radius: 50%;
                                     position: absolute;
@@ -136,24 +149,131 @@
                                     line-height: 17px;
                                 }
                             }
-                            svg{
+                            svg {
                                 width: 22px;
                                 transition: 300ms;
                             }
                         }
-                        button.menuButton:hover{
+                        button.menuButton:hover {
                             transition: 1500ms;
-                            span{
-                                label.buttonLabel{
+                            span {
+                                label.buttonLabel {
                                     color: $hight-light_color;
                                     transition: 1500ms;
                                 }
                             }
-                            svg{
-                                path{
+                            svg {
+                                path {
                                     fill: $hight-light_color;
                                 }
                                 transition: 300ms;
+                            }
+                        }
+                        div.notifiactionDiv {
+                            flex-grow: 1;
+                            display: flex;
+                            flex-direction: row;
+                            div.newestNotifiactionDiv {
+                                flex-grow: 1;
+                                display: flex;
+                                align-items: center;
+                                justify-content: flex-end;
+                                div.newestNotifiactionChild {
+                                    width: 75%;
+                                    justify-content: center;
+                                    div.notifiactionUserNewNotiti {
+                                        background-color: rgba(255, 59, 0, 0.24) !important;
+                                    }
+                                    div.notifiactionUser {
+                                        @extend .flexRow;
+                                        align-items: center;
+                                        left: 285px;
+                                        width: 385px;
+                                        padding: 10px 30px;
+                                        position: absolute;
+                                        top: 7px;
+                                        border-radius: 4px;
+                                        background-color: rgba(9, 202, 41, 0.07);
+                                        transition: 500ms;
+                                        label.postIDLabel {
+                                            position: absolute;
+                                            bottom: 4px;
+                                            font-size: .6em;
+                                            right: 15px;
+                                        }
+                                        img.formUserAvatar {
+                                            width: 25px;
+                                            border-radius: 50%;
+                                            border: solid 1px #ccc;
+                                        }
+                                        label.notifiactionUserProfileName {
+                                            font-size: .65em;
+                                        }
+                                        label.notifiactionLabelAvatar {
+                                            width: 26px;
+                                            height: 26px;
+                                            display: flex;
+                                            background-color: floralwhite;
+                                            color: red;
+                                            align-items: center;
+                                            justify-content: center;
+                                            /* font-size: .9em; */
+                                            font-weight: bold;
+                                            border: solid 1px #ccc;
+                                            border-radius: 50%;
+                                        }
+                                        span.notifiactionContent {
+                                            margin-left: 5px;
+                                            font-size: .75em;
+                                            margin-bottom: 5px;
+                                            width: 330px;
+                                            overflow: hidden;
+                                            display: inline-block;
+                                            text-overflow: ellipsis;
+                                            white-space: nowrap;
+                                            label.notifiactionUserName {
+                                                margin-right: 5px;
+                                                font-weight: bold;
+                                                color: $main_button_color;
+                                            }
+                                            label.notifiactionTime {
+                                                display: block;
+                                                font-size: .7em;
+                                                margin-top: 3px;
+                                                margin-left: 5px;
+                                            }
+                                        }
+                                        svg.newIcon {
+                                            width: 18px;
+                                            position: absolute;
+                                            right: 15px;
+                                            top: 8px;
+                                        }
+                                        svg.LIKE{
+                                            fill: #ffe000;
+                                        }
+                                        svg.COMMENT{
+                                            fill: green;
+                                        }
+                                        svg.CHAT{
+                                            fill: red;
+                                            width: 20px;
+                                            top: 10px;
+                                        }
+                                    }
+                                    div.notifiactionAction {
+                                        @extend .flexCol;
+                                        justify-content: center;
+                                        align-items: center;
+                                        label.actionTime {
+                                            font-size: 0.6em;
+                                            margin-top: 5px;
+                                        }
+                                        svg.actionIcon {
+                                            width: 20px;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -228,7 +348,7 @@
         a.menu:hover:not(.active) {
             border-bottom-color: #ccc;
         }
-        button.signOut{
+        button.signOut {
             width: 40px;
             min-width: 40px;
             border-radius: 50%;

@@ -1,0 +1,140 @@
+@import '../Variable.scss';
+div.mainChatBox {
+    width: 350px;
+    height: 350px;
+    position: absolute;
+    margin-top: calc(100vh - 365px);
+    right: 15px;
+    background-color: rgba(204, 204, 204, .8);
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    div.messagesList {
+        flex-grow: 1;
+        div.fromUserMessages {}
+        div.myMessages::-webkit-scrollbar {
+            width: 5px;
+            background-color: #F5F5F5;
+        }
+        div.myMessages::-webkit-scrollbar-thumb {
+            background-color: #555;
+        }
+        div.myMessages {
+            max-height: 245px;
+            overflow: auto;
+            span.messageInfoFrom,
+            span.messageInfoMain {
+                width: 100%;
+                display: block;
+                padding: 5px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                img.avatar {
+                    width: 22px;
+                    border-radius: 50%;
+                    border: solid 1px #ccc;
+                }
+                label.content {
+                    font-size: .75em;
+                    padding: 3px 5px;
+                    color: #212121;
+                    background-color: #ccc;
+                    border-radius: 3px;
+                }
+            }
+            span.messageInfoFrom {
+                img.avatar {
+                    margin-right: 5px;
+                }
+            }
+            span.messageInfoMain {
+                .content{
+                    background-color: $main_button_color !important;
+                    color: white !important;
+                }
+                justify-content: flex-end;
+                img.avatar {
+                    margin-left: 5px;
+                }
+            }
+            div.loadMoreDiv{
+                text-align: center;
+                padding: 5px 0px;
+                label.loadMoreMessages{
+                    color: #292929;
+                    font-weight: bold;
+                    font-size: .8em;
+                    padding: 2px 5px;
+                    border: solid 1px #ff3b00;
+                    border-radius: 16px;
+                }
+            }
+            label.avatarLabel{
+                border: solid 1px #ccc;
+                width: 22px;
+                height: 22px;
+                text-align: center;
+                background-color: #256396;
+                border-radius: 50%;
+                margin-right: 5px;
+                color: white;
+            }
+        }
+    }
+    span.toUserInfo {
+        display: flex;
+        flex-direction: row;
+        /* justify-content: center; */
+        align-items: center;
+        width: 100%;
+        padding: 8px 5px;
+        box-sizing: border-box;
+        background-color: #ccc;
+        min-height: 41px;
+        label{
+            color: #333;
+            font-weight: bold;
+        }
+        label.avatarLabelInfo{
+            border: solid 1px #ccc;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            background-color: #256396;
+            border-radius: 50%;
+            margin-right: 5px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: normal;
+        }
+        img.toUserInfoAvatar {
+            width: 30px;
+            border: solid 1px #ccc;
+            border-radius: 50%;
+            height: 30px;
+            margin-right: 5px;
+        }
+    }
+    textarea.chatBox {
+        height: 30px;
+        background-color: #ccc;
+        border: 0px;
+        border-top: solid .5px #ccc;
+        outline: unset;
+        color: #333;
+        font-weight: bold;
+        font-family: "Lato" !important;
+        padding: 5px;
+    }
+    svg.cancelMessageBox{
+        width: 20px;
+        position: absolute;
+        right: 3px;
+        top: 3px;
+        path{
+            fill: #292929;
+        }
+    }
+}

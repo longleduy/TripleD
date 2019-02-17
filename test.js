@@ -1,3 +1,3 @@
-
-var test ={"a":'long'};
-test["2"] = 
+(() => {
+    console.log(Date());
+})();

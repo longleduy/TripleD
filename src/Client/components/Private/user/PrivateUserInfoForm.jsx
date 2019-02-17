@@ -326,4 +326,4 @@ class PrivateUserInfoForm extends PureComponent {
         </Fragment>
     }
 }
-export default withApollo(PrivateUserInfoForm);
+export default PrivateUserInfoForm;

@@ -1,7 +1,10 @@
 import { gql } from 'apollo-server-express'
 //Todo: Controllers
 import * as userAccountController from '../../../controllers/users/user_controller'
+import {update} from '../../../controllers/test'
+import {insertEmailActiveAccBuffer} from '../../../utils/job_utils/email_buffer_util'
 import { authorizationMiddleWare } from '../../../middlewares/authorization_middleware'
+import {convertPostTime} from '../../../utils/common'
 export const typeDefs = gql`
 interface  UserAccountInterface{
         firstName: String
@@ -37,6 +40,22 @@ interface  UserAccountInterface{
         instagramAdress:String
         posts:Int
     }
+    type NewNotificationInfo{
+        newNotifications: NotificationCount!
+        newestNotificationInfo: NotificationInfo
+    }
+    type NotificationCount{
+        likeAndComments: Int!
+        messages: Int!
+    }
+    type NotificationInfo{
+        formUserName: String!
+        formUserAvatar: String
+        action: String!
+        postID: String
+        content:String
+        actionTime: String!
+    }   
     type SignInInfo {
         jwt:String!
     }
@@ -80,7 +99,8 @@ interface  UserAccountInterface{
     extend type Query{
         checkEmail(email: String!): checkEmail
         verifyEmail(secretKey: String!): verifyEmail
-        asyncForEach:boolean
+        getNotificationInfo:NewNotificationInfo
+        test:boolean
     }
     extend type Mutation {
         addNewUserAccount(formData: formData):UserAccountInterface
@@ -97,8 +117,12 @@ export const resolvers = {
         verifyEmail: (obj, args, context) => {
             return userAccountController.verifyEmail(args.secretKey);
         },
-        asyncForEach: (obj, args, context) => {
-            return userAccountController.asyncForEach();
+        getNotificationInfo: (obj, args, { req,res }) => {
+            return authorizationMiddleWare(req,res, userAccountController.getNewNotification);
+        },
+        test: (obj, args, context) => {
+            //insertEmailActiveAccBuffer();
+            update();
         }
      },
     Mutation: {
@@ -118,6 +142,26 @@ export const resolvers = {
         },
         updateUserInfo: async (obj, args, { req,res }) => {
             return authorizationMiddleWare(req,res, userAccountController.updateUserInfo,args.updateUserDataInput);
+        }
+    },
+    NewNotificationInfo: {
+        newestNotificationInfo : async (obj, args, { req, res }) => {
+            const data = obj.newestNotificationInfo;
+            if(!data) return null;
+            return {
+                formUserName: data.fromUser.profileName,
+                formUserAvatar: data.fromUser.avatar,
+                action: data.action,
+                postID: data.postID,
+                content: data.content,
+                actionTime: convertPostTime(data.notifiTime)
+            }
+        },
+        newNotifications : async (obj, args, { req, res }) => {
+            return {
+                likeAndComments: obj.newNotifications.likeAndComments,
+                messages: obj.newNotifications.messages
+            };
         }
     },
     UserAccountInterface: {

@@ -1,19 +1,21 @@
 import { mongo } from 'mongoose'
 //Todo: Model
 import { userModel } from '../../models/user_model'
+import {notificationModel} from '../../models/notification_model'
+
 import fs from 'fs'
 import util from 'util'
 //Todo: Utils
 import * as passWordUtil from '../../utils/password_util'
-import { emailSender } from '../../utils/email_sender'
+import {insertEmailActiveAccBuffer} from '../../utils/job_utils/email_buffer_util'
 import { AuthenticationError } from 'apollo-server-express'
 import * as commonUtils from '../../utils/common'
 import * as errorHandler from '../../utils/error_handler'
-import delay from 'delay'
 import { uploadImage } from '../../utils/common'
-import {refreshJWT} from '../../middlewares/refresh_jwt'
+import { refreshJWT } from '../../middlewares/refresh_jwt'
+import {asyncClient} from '../../utils/redis'
 //Todo: Contants
-import {ACCOUNT_NOT_AVAILABLE, WRONG_PASSWORD, ERROR_EMAIL_NOT_VERIFY} from '../../utils/contants/error_message_contants'
+import { ACCOUNT_NOT_AVAILABLE, WRONG_PASSWORD, ERROR_EMAIL_NOT_VERIFY } from '../../utils/contants/error_message_contants'
 
 const readFile = util.promisify(fs.readFile);
 
@@ -37,19 +39,18 @@ export const addNewUserAccount = async (args) => {
         profileName: `${args.firstName} ${args.lastName}`,
         passWord: passWord,
         gender: null,
-        dateOfBirth:null,
+        dateOfBirth: null,
         level: "Member",
-        point:0,
-        rank:1,
+        point: 0,
+        rank: 1,
         facebookAdress: null,
         instagramAdress: null,
-        active: true,
+        active: false,
         avatar: null
     });
     let result = await newUserAccount.save();
     let { email } = args;
-    let emailEncoded = new Buffer(email).toString('base64');
-    //emailSender(email, emailEncoded, 'SIGN_UP_VERIFY');
+    insertEmailActiveAccBuffer(email);
     return result;
 };
 export const verifyEmail = async (secretKey) => {
@@ -89,20 +90,21 @@ export const signIn = async (formData) => {
                 const date = new Date(result.createTime);
                 const joinAt = date.toDateString();
                 let dateOfBirthString;
-                if(result.dateOfBirth != null){
+                if (result.dateOfBirth != null) {
                     const newDate = new Date(result.dateOfBirth);
                     dateOfBirthString = newDate.toDateString();;
                 }
                 const payload = {
-                    avatar:result.avatar,
+                    userID:result._id,
+                    avatar: result.avatar,
                     email: result.email,
                     profileName: result.profileName,
                     level: result.level,
                     gender: result.gender,
-                    dateOfBirth:dateOfBirthString?dateOfBirthString:result.dateOfBirth,
-                    joinAt:joinAt,
-                    facebookAdress:result.facebookAdress,
-                    instagramAdress:result.instagramAdress,
+                    dateOfBirth: dateOfBirthString ? dateOfBirthString : result.dateOfBirth,
+                    joinAt: joinAt,
+                    facebookAdress: result.facebookAdress,
+                    instagramAdress: result.instagramAdress,
                 }
                 const jwt = commonUtils.genJWT(payload, process.env.SECRET_KEY, '10h');
                 result["jwt"] = jwt
@@ -120,52 +122,40 @@ export const signIn = async (formData) => {
         })
     }
 }
-export const updateUserInfo =  async (updateData, req,res) => {
+export const updateUserInfo = async (updateData, req, res) => {
     const _id = mongo.ObjectId(req.session.user._id);
-    if(updateData.avatar != '' && updateData.avatar != null){
-       const avatarUrl = await uploadImage(updateData.avatar,{ width: 300,height: 300,radius: 'max',crop: "fill" });
-       updateData["avatar"] = avatarUrl;
+    if (updateData.avatar != '' && updateData.avatar != null) {
+        const avatarUrl = await uploadImage(updateData.avatar, { width: 300, height: 300, radius: 'max', crop: "fill" });
+        updateData["avatar"] = avatarUrl;
     }
-    const fieldResult = {...updateData};
+    const fieldResult = { ...updateData };
     Object.keys(fieldResult).forEach(v => fieldResult[v] = 1)
-    const data = await userModel.findOneAndUpdate({_id:_id},{$set:updateData},{new:true,fields: fieldResult});
+    const data = await userModel.findOneAndUpdate({ _id: _id }, { $set: updateData }, { new: true, fields: fieldResult });
     const result = data.toObject();
-    if(result.dateOfBirth != null){
+    if (result.dateOfBirth != null) {
         const date = new Date(result.dateOfBirth);
         const dateStr = date.toDateString();
         result.dateOfBirth = dateStr;
     }
-    await refreshJWT(req,res,result);
+    await refreshJWT(req, res, result);
     return result;
 }
-export const asyncForEach = async () => {
-    const start = Date.now()
-  let i = 0
-  function res(n) {
-    const id = ++i
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve()
-        console.log(`res #${id} called after ${n} milliseconds`, Date.now() - start)
-      }, n)
-    })
-  }
-  const arr = [3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
-   arr.forEach(async (val,idx)=> {
-      const delay = await  res(val);
-      console.log(`Delay: ${val}`);
-  })
-  console.log("Done");
-//   const d3 = await delay3;
-//   const d = await delay1;
-//   const d2 = await delay2;
-    //  var indexArr = [0, 1, 2, 3, 4, 5, 9];
-    //  indexArr.forEach(async (val, index) => {
-    //     const data = await userModel.find({}).skip(val).limit(1);
-    //     console.log(data);
-    //  })
-    // console.log("Done");
-    // return {
-    //     isSuccess : false
-    // }
+export const getNewNotification = async (args,req,res) => {
+    const userID = req.session.user._id;
+    const countLikeAndPostAsyncFunc = notificationModel.countDocuments({userID,action:{$in:['LIKE','COMMENT']},isNewNotif:true});
+    const countMessageAsyncFunc = notificationModel.countDocuments({userID,action:{$in:['CHAT']},isNewNotif:true});
+    const getNewestNotificationAsyncFunc = notificationModel.find({userID,isNewNotif:true}).populate('fromUser', 'profileName avatar').sort({ notifiTime:-1,_id: -1 });
+    const likeAndComments = await  countLikeAndPostAsyncFunc;
+    const messages = await  countMessageAsyncFunc;
+    const newestNotification = await getNewestNotificationAsyncFunc;
+    return {
+        newNotifications:{
+            likeAndComments,
+            messages
+        },
+        newestNotificationInfo: newestNotification[0]
+    }
+}
+export const getMailUserID = (userID) => {
+    return `email_buffer:${userID}`;
 }

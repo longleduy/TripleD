@@ -3,6 +3,7 @@ export const mutationUserInfo = (_, args, { cache }) => {
         data: {
             queryUserInfo: {
                 __typename: 'UserInfo',
+                userID: args.userInfo.userID,
                 isAuthen: args.userInfo.isAuthen,
                 profileName: args.userInfo.profileName,
                 email: args.userInfo.email,
@@ -19,5 +20,42 @@ export const mutationUserInfo = (_, args, { cache }) => {
             }
         }
     })
+    return null
+}
+export const mutationChatChanel = (_, args, { cache }) => {
+    if(args.isOpen){
+        cache.writeData({
+            data: {
+                chatChanel: {
+                    __typename: 'ChatChanel',
+                    isOpen: args.isOpen,
+                    chanelId: null,
+                    toUser:{
+                        __typename: 'ToUser',
+                        profileName: args.to.profileName,
+                        avatar: args.to.avatar,
+                        id: args.to.id
+                    }
+                }
+            }
+        })
+    }
+    else{
+        cache.writeData({
+            data: {
+                chatChanel: {
+                    __typename: 'ChatChanel',
+                    isOpen: args.isOpen,
+                    chanelId: null,
+                    toUser:{
+                        __typename: 'ToUser',
+                        profileName: null,
+                        avatar: null,
+                        id: '5c45717a5cc6f200b8154b2c'
+                    }
+                }
+            }
+        })
+    }
     return null
 }

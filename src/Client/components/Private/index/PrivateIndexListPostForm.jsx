@@ -1,7 +1,7 @@
 import React, { useEffect, PureComponent } from 'react'
 import _ from 'lodash'
 import { PrivatePostChildForm } from './PrivatePostChildForm.jsx'
-import { POST_LIKE_SUBSCRIPTION, CREATE_POST_SUBSCRIPTION } from '../../../graphql/subscriptions/post_subscription'
+import { POST_LIKE_SUBSCRIPTION, CREATE_POST_SUBSCRIPTION, POST_COMMENT_COUNT_SUBSCRIPTION } from '../../../graphql/subscriptions/post_subscription'
 let postDateInterval;
 class PrivateIndexListPostForm extends PureComponent {
     componentWillMount(){
@@ -10,6 +10,16 @@ class PrivateIndexListPostForm extends PureComponent {
             updateQuery: (prev,result) => {
              let post = _.filter(prev.getLimitedPost,{id:`${result.subscriptionData.data.postLiked.postID}`});
              post[0].count.likes = result.subscriptionData.data.postLiked.likes;
+              return {
+                getLimitedPost: prev.getLimitedPost
+              }
+            }
+          });
+          this.props.subscribeToMore({
+            document: POST_COMMENT_COUNT_SUBSCRIPTION,
+            updateQuery: (prev,result) => {
+              let post = _.filter(prev.getLimitedPost,{id:`${result.subscriptionData.data.commentPostCountSub.postID}`});
+              post[0].count.comments = post[0].count.comments + 1;
               return {
                 getLimitedPost: prev.getLimitedPost
               }

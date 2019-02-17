@@ -7,5 +7,5 @@ const postSchema = mongoose.Schema({
     tag:[{type: String}],
     image:{type: String}
 });
-
+postSchema.index({content: 'text'});
 export const postModel = mongoose.model('tripled_posts', postSchema);

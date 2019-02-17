@@ -11,6 +11,9 @@ export const errorHandlerAuthen =(error, client, history) => {
     console.error("Server error__________"+error);
     let code;
     let errorMessage = error.message.split(':')[0];
+    if(error.message.split(':')[1] == ' Empty list'){
+        return true;
+    }
     try {
         code = error.graphQLErrors[0].extensions.code;
     } catch (error) { }

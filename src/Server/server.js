@@ -14,6 +14,8 @@ import app from './app'
 import { schema } from './graphqls/schemas/schemas'
 //Todo: Error handler
 import { ErrorLogger } from './utils/logger'
+//Todo: Jobs start()
+import {jobs} from './jobs/jobs.js'
 //Todo: Ultis
 import * as ServerInfo from '../Configs/_host_contants'
 //Todo: ENV
@@ -41,7 +43,7 @@ const connectApolloServer = async () => {
         message,
       };
     },
-    playground: true
+    playground: false
   });
   //Todo: Disable cors của ApolloServer nếu không nó sẽ đè lên cors của app => vấn đề về Sameorigin
   server.applyMiddleware({ app, cors: false });
@@ -64,6 +66,7 @@ const connectApolloServer = async () => {
       await connectDB;
       await connectServer;
       console.log(`🛡️  ${chalk.cyan('Apollo server')},${chalk.green('MongoDB')} connecting..., ${chalk.cyan('Port')} ${ServerInfo.SERVER_PORT}`)
+      //jobs();
     } catch (error) {
       console.log(error);
     }

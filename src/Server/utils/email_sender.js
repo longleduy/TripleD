@@ -2,8 +2,8 @@ import nodemailer from 'nodemailer'
 //Todo: Utils
 import * as EmailInfo from '../utils/contants/email_info_contants'
 import * as EmailHTML from './contants/email_content'
-
-export const emailSender = (to, data, fn) => {
+import {convertBufferToString} from './common'
+export const emailSender = async (to, data, fn) => {
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -15,7 +15,7 @@ export const emailSender = (to, data, fn) => {
     let subject;
     if (fn == 'SIGN_UP_VERIFY') {
         subject = 'Verify email address'
-        html = htmlSignUpVerify(to,data)
+        html = convertBufferToString(data);
     }
     else if (fn == 'CHANGE_PASSWORD_CONFIRM') {
         html = htmlChangePasswordConfirm(data)
@@ -32,13 +32,7 @@ export const emailSender = (to, data, fn) => {
         html
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log(`Email was sended to ${to}`);
-    });
-
+   await transporter.sendMail(mailOptions);
 }
 const htmlSignUpVerify = (to,data) => {
     return EmailHTML.htmlSignUpVerify(to,data)
